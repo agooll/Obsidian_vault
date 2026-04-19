@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "第二天作业.md",
+                "file": "测试开发/第二天作业-测试基础.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "第二天作业"
+              "title": "第二天作业-测试基础"
             }
           }
         ]
@@ -184,12 +184,20 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "c4e137c10ae5d868",
+  "active": "3140491b50a775d0",
   "lastOpenFiles": [
-    "assets/第二天作业/file-20260419165825586.png",
     "第二天作业.md",
+    "测试开发/第二天作业-测试基础.md",
+    "conflict-files-obsidian-git.md",
+    "测试开发/assets/第二天作业-测试基础/file-20260419173932990.png",
+    "测试开发/assets/第二天作业-测试基础",
+    "测试开发/assets",
+    "测试开发",
+    "assets/第二天作业/Screenshot_2026-04-19-17-17-08-35_e39d2c7de19156b0683cd93e8735f348.jpg",
     "assets/第二天作业",
     "assets",
+    "assets/第二天作业/file-20260419165825586.png",
+    "测试开发/assets/第二天作业",
     "dsad.md",
     "测试开发",
     "hyq.md",
