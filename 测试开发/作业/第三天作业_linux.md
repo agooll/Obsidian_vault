@@ -29,8 +29,7 @@ ps -ef | grep Mysql
 netstat -plunt 3306
 #### 作业3 
 vim vi 
-#### 作业4
-
+####### 作业4
 mkdir div 
 cd div
 touch 1.txt 2.txt
