@@ -42,7 +42,8 @@ mv 2.txt /css
  cd css
  vi 2.txt ;i;linux;:wq!
  chmod 777 2.txt
-2.txt 
+tar -zcvf 2.txt  
+tar -zxvf 2.tar.gz
 ####作业5
 top的含义是动态的显示系统中的所有进程 里面关键的参数是 进程的所属用户 运行时间 进程的等等 free -h是显示服务器的内存信息
 du -h是显示目录下文件大小
