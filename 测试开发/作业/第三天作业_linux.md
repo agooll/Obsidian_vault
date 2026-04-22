@@ -31,7 +31,6 @@ netstat -plunt 3306
 vim vi 
 #### 作业4
 
-```
 mkdir div 
 cd div
 touch 1.txt 2.txt
@@ -43,9 +42,8 @@ mv 2.txt /css
  cd css
  vi 2.txt ;i;linux;:wq!
  chmod 777 2.txt
- 
-```
-#### 作业5
+2.txt 
+####作业5
 top的含义是动态的显示系统中的所有进程 里面关键的参数是 进程的所属用户 运行时间 进程的等等 free -h是显示服务器的内存信息
 du -h是显示目录下文件大小
 df -h是显示磁盘的剩余空间
