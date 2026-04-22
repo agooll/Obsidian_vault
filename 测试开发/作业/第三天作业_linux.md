@@ -26,26 +26,31 @@ head -x(数字)f 查看文件的头部的x行
 #### 作业1
 ps -ef | grep Mysql 
 #### 作业2
-netstat -plunt 3306
+netstat ｜plunt 3306
 #### 作业3 
-vim vi 
+vim vi
+
 ### 作业4
-mkdir div 
+
+```bash
+mkdir div
 cd div
 touch 1.txt 2.txt
 mv 1.txt 3.txt
 mkdir css
 vi 2.txt ; i ;linux;wq!
-mv 2.txt css/ 
+mv 2.txt css/
 rm -rf 3.txt
 cd css
 vi 2.txt ;i;linux;:wq!
 chmod 777 2.txt
-tar -zcvf 2.tar.gz 2.txt  
+tar -zcvf 2.tar.gz 2.txt
 tar -zxvf 2.tar.gz
 tail -f 2.txt
 pwd
-####作业5
+```
+
+### 作业5
 top的含义是动态的显示系统中的所有进程 里面关键的参数是 进程的所属用户 运行时间 进程的等等 free -h是显示服务器的内存信息
 du -h是显示目录下文件大小
 df -h是显示磁盘的剩余空间
