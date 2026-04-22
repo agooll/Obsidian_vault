@@ -38,11 +38,11 @@ mv 1.txt 3.txt
 mkdir css
 vi 2.txt ; i ;linux;wq!
 mv 2.txt /css 
- rm -rf 1.txt
+ rm -rf 3.txt
  cd css
  vi 2.txt ;i;linux;:wq!
  chmod 777 2.txt
-tar -zcvf 2.txt  
+tar -zcvf 2.tar.gz 2.txt  
 tar -zxvf 2.tar.gz
 tail -f 2.txt
 pwd
