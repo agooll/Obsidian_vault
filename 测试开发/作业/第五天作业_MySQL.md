@@ -20,6 +20,11 @@ select
 5. min() 最小值
 ### 作业六
 #### 整数类型
-- int 
+- int
+- tinyint
+- bigint
+#### 小数类型
+- float
+- 
 
 
