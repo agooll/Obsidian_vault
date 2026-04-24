@@ -18,12 +18,8 @@ select
 3. sum() 总和
 4. max() 最大值
 5. min() 最小值
-6. 
 ### 作业六
-- varchar 
-- char
-- string
-- int
-- bigint
-- 
+#### 整数类型
+- int 
+
 
