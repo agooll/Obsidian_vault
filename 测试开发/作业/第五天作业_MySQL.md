@@ -18,7 +18,10 @@ select
 3. sum 总和
 4. 
 ### 作业六
-varchar
-char 
-
+- varchar 
+- char
+- string
+- int
+- bigint
+- 
 
