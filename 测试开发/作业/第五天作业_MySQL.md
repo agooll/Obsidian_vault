@@ -25,6 +25,12 @@ select
 - bigint
 #### 小数类型
 - float
+- double
+- decimal
+#### 字符型
+- char
+- varchar
 - 
+
 
 
