@@ -30,7 +30,11 @@ select
 #### 字符型
 - char
 - varchar
-- 
+- string
+#### 时间类型
+- date
+- time
+
 
 
 
