@@ -2,12 +2,14 @@
 ### 作业一
 Navicat 连接数据库时，使用的是 MySQL 数据库所在服务器的 IP 地址
 ### 作业二
+```
 
+```
 ### 作业三
-- insert 
-- delete
-update
-select
+- insert  增
+- delete 删
+- update 改
+- select 查
 ### 作业四
 - truncate的作用是删除数据的时候不会把表结构给删除 并且会把主键的自增的顺序给重置 并且只能删除整张表 不能加条件
 - delete的作用是删除数据的时候 不会删除表结构 把数据删除时 主键的自增顺序不会改变 可以加where限制条件
