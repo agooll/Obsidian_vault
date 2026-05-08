@@ -7,3 +7,6 @@
 ![](assets/wms项目/file-20260508223605089.png)
 ![](assets/wms项目/file-20260508223623942.png)
 进行的逻辑删除 不是物理删除
+jmeter中的接口测试的图形化测试报告
+在jmeter中的命令行输入 
+***Jmeter -n -t  xxx.jmx -l  xxx.log -e - o xxx***
