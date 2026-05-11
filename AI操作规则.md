@@ -1,6 +1,4 @@
-\# AI 操作 Obsidian Vault 规则
-
-
+# AI 操作 Obsidian Vault 规则
 
 1\. 默认只修改 Markdown 文件。
 
