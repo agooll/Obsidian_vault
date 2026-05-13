@@ -244,18 +244,18 @@ HTTP 状态码
 
 ### 6.1 请求头常见字段
 
-| 字段 | 含义 |
-|---|---|
-| Host | 请求的服务器域名或 IP |
-| User-Agent | 客户端信息，例如浏览器、操作系统 |
-| Accept | 客户端希望接收的数据类型 |
-| Content-Type | 请求体的数据格式，例如 JSON、表单 |
-| Content-Length | 请求体长度 |
-| Authorization | 身份认证信息，例如 token |
-| Cookie | 客户端携带的 Cookie |
-| Referer | 请求来源页面 |
-| Origin | 请求来源，常用于跨域校验 |
-| Cache-Control | 缓存控制 |
+| 字段             | 含义                  |
+| -------------- | ------------------- |
+| Host           | 请求的服务器域名或 IP        |
+| User-Agent     | 客户端信息，例如浏览器、操作系统    |
+| Accept         | 客户端希望接收的数据类型        |
+| Content-Type   | 请求体的数据格式，例如 JSON、表单 |
+| Content-Length | 请求体长度               |
+| Authorization  | 身份认证信息，例如 token     |
+| Cookie         | 客户端携带的 Cookie       |
+| Referer        | 请求来源页面              |
+| Origin         | 请求来源，常用于跨域校验        |
+| Cache-Control  | 缓存控制                |
 
 注意：
 
