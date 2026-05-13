@@ -1019,6 +1019,37 @@ Authorization: ${__P(token,NOT_FOUND)}
 Content-Type: application/x-www-form-urlencoded
 ```
 
+你截图里的三个头含义：
+
+- `content-type: application/json;charset=UTF-8`：告诉后端“我发的是 JSON 请求体，编码 UTF-8”。
+- `Accept: application/json`：告诉后端“我希望你返回 JSON”。
+- `authorization: ${__property(token,,)}`：从 JMeter 全局属性读取 token 做身份认证。
+
+### 17.1 认证头推荐模板（不会错版）
+
+模板 A（token 已自带 Bearer）：
+
+```text
+content-type    application/json;charset=UTF-8
+Accept          application/json
+Authorization   ${__P(token,NOT_FOUND)}
+```
+
+模板 B（token 不带 Bearer，需要手动补）：
+
+```text
+content-type    application/json;charset=UTF-8
+Accept          application/json
+Authorization   Bearer ${__P(token,NOT_FOUND)}
+```
+
+怎么判断用 A 还是 B：
+
+- 登录响应里如果是 `Bearer eyJ...`，用模板 A。
+- 登录响应里如果只是 `eyJ...`，用模板 B。
+
+补充：`__P` 和 `__property` 都能取属性，初学建议统一用 `__P`，更短更直观。
+
 注意：
 
 ```text
