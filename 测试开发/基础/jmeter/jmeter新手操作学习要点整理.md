@@ -140,6 +140,58 @@ POST 是客户端向服务端提交数据。
 
 > GET 一般用于从服务端获取数据，参数通常放在 URL 中；POST 一般用于向服务端提交数据，参数通常放在请求体中。GET 更适合查询，POST 更适合新增、登录、注册、提交表单等操作。POST 不是服务端向客户端发送数据，而是客户端向服务端提交数据。
 
+### 4.1 JMeter 里什么时候用“消息体数据”
+
+先记一句话：
+
+```text
+消息体数据 = HTTP Body（请求体）
+只有接口文档要求“参数在 body 里”时，才填这个区域。
+```
+
+按请求方法快速判断：
+
+| 请求方法 | JMeter 常用填写位置 | 是否常用“消息体数据” |
+|---|---|---|
+| GET | `参数`页签（query 参数）或直接拼在 URL | 一般不用 |
+| POST（JSON） | `消息体数据`页签 | 常用 |
+| POST（表单） | `参数`页签（x-www-form-urlencoded） | 视接口而定 |
+| PUT / PATCH | 多数接口放 body | 常用 |
+| DELETE | 看接口文档，有的放 query，有的放 body | 不固定 |
+
+结合你截图这个场景：
+
+- 你当前是 `GET` 请求，路径是查询字典类型，通常是“查数据”接口。
+- 这种接口一般不用 `消息体数据`，优先放在 `参数`页签（例如 `dictType=wms_receipt_type`）或 URL 查询串。
+- 如果你在 GET 里填了 `消息体数据`，很多后端会忽略，可能看起来“发了但没生效”。
+
+什么时候必须填“消息体数据”：
+
+1. 接口文档明确写了 `Body` / `Request Body`
+2. 文档给的是 JSON 示例
+3. 请求头要求 `Content-Type: application/json`
+
+典型 JSON body 示例（放在“消息体数据”）：
+
+```json
+{
+  "username": "test01",
+  "password": "123456",
+  "rememberMe": true
+}
+```
+
+常见错误排查：
+
+- 明明填了 JSON，但没设置 `Content-Type: application/json`
+- 把 query 参数错填到“消息体数据”
+- GET 接口误用 body，后端不解析
+- 字段名大小写、层级和文档不一致
+
+面试表达：
+
+> 我会先看接口文档参数位置。如果是 query/path 参数，我在 JMeter 的参数或路径里填；如果是 Request Body（尤其 JSON），我会在消息体数据里填，并配套设置 Content-Type 为 application/json。
+
 ---
 
 ## 5. HTTP 状态码和业务状态码
