@@ -286,6 +286,58 @@ HTTP 状态码
 状态码属于响应状态行。
 ```
 
+### 6.3 浏览器 F12 抓包内容，怎么对应到 JMeter
+
+你说的这个点非常关键：浏览器 DevTools 的展示方式和 JMeter 的填写方式不完全一样。
+
+可以按下面这张“对照表”直接搬：
+
+| F12 位置（Network） | 你看到的内容 | JMeter 对应位置 |
+|---|---|---|
+| Headers > General | Request URL | `HTTP 请求`里的协议/服务器/IP/端口/路径（也可拆到`HTTP请求默认值`） |
+| Headers > General | Request Method（GET/POST...） | `HTTP 请求`里的“方法”下拉框 |
+| Headers > Request Headers | Accept、Content-Type、Authorization、Cookie... | `HTTP 信息头管理器` |
+| Headers > Query String Parameters | `a=1&b=2` 这类查询参数 | `参数`页签 |
+| Payload > Form Data | 表单键值对 | `参数`页签（常见 x-www-form-urlencoded） |
+| Payload > Request Payload | JSON 大对象 | `消息体数据`页签 |
+| Payload > multipart/form-data | 文本字段 + 文件 | 文本放`参数`，文件放`文件上传` |
+| URL 路径本身 | `/api/user/123` 中的 path 片段 | `路径`（如 `/api/user/${userId}`） |
+
+再记 3 条实战规则：
+
+1. F12 看到 `Query String Parameters` -> 优先填 JMeter `参数`。
+2. F12 看到 `Request Payload`（JSON）-> 填 JMeter `消息体数据`，并在请求头加 `Content-Type: application/json`。
+3. F12 看到 `Form Data` -> 多数填 JMeter `参数`，不是 `消息体数据`。
+
+一个快速拆分示例：
+
+```text
+Request URL:
+https://test.example.com:8443/api/system/user/list?pageNum=1&pageSize=10
+
+Request Method:
+GET
+
+Request Headers:
+Authorization: Bearer xxx
+Accept: application/json
+```
+
+在 JMeter 里应写成：
+
+- 协议：`https`
+- 服务器：`test.example.com`
+- 端口：`8443`
+- 路径：`/api/system/user/list`
+- 方法：`GET`
+- 参数：`pageNum=1`，`pageSize=10`
+- 信息头：`Authorization`、`Accept`
+
+补充：
+
+- 状态码（200/401/500）是响应结果，不是请求参数，不需要填到请求里。
+- Response Headers / Response Body 用来做断言与排错，不是构造请求时要填写的内容。
+
 ---
 
 ## 7. JSON 断言：判断接口返回是否符合预期
