@@ -266,18 +266,18 @@ HTTP 状态码
 
 ### 6.2 响应头常见字段
 
-| 字段 | 含义 |
-|---|---|
-| Content-Type | 响应体的数据格式 |
-| Content-Length | 响应体长度 |
-| Set-Cookie | 服务端设置 Cookie |
-| Cache-Control | 缓存策略 |
-| Location | 重定向地址 |
-| ETag | 资源标识，用于缓存校验 |
-| Last-Modified | 资源最后修改时间 |
-| Server | 服务端软件信息 |
-| Date | 服务端响应时间 |
-| Access-Control-Allow-Origin | 跨域相关字段 |
+| 字段                          | 含义           |
+| --------------------------- | ------------ |
+| Content-Type                | 响应体的数据格式     |
+| Content-Length              | 响应体长度        |
+| Set-Cookie                  | 服务端设置 Cookie |
+| Cache-Control               | 缓存策略         |
+| Location                    | 重定向地址        |
+| ETag                        | 资源标识，用于缓存校验  |
+| Last-Modified               | 资源最后修改时间     |
+| Server                      | 服务端软件信息      |
+| Date                        | 服务端响应时间      |
+| Access-Control-Allow-Origin | 跨域相关字段       |
 
 注意：
 
