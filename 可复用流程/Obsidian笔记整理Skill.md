@@ -51,21 +51,6 @@
 - 子标题统一：`### 来源说明`、`### 本文主题`、`### 关键要点`
 - 摘要内容改为紧凑编号列表。
 
-### 第 5 步：JMeter/F12 知识点补写规范
-
-当用户提到抓包或 JMeter 映射时，写入对应章节：
-
-- `Request Headers` -> `HTTP 信息头管理器`
-- `Query String Parameters` -> `参数`
-- `Request Payload(JSON)` -> `消息体数据`
-- `Form Data` -> `参数`
-- `multipart/form-data` -> `参数 + 文件上传`
-
-并补充两套 Authorization 模板：
-
-1. token 自带 `Bearer`：`Authorization: ${__P(token,NOT_FOUND)}`
-2. token 不带 `Bearer`：`Authorization: Bearer ${__P(token,NOT_FOUND)}`
-
 ## 输出规范（每次执行后）
 
 - 必须告知：`文件路径 + 关键修改点所在行号`。
@@ -81,8 +66,7 @@
 1) 只去头去尾噪音，中间正文不删；
 2) 修复 Markdown 显示（列表、空行、编号）；
 3) 按现有内容补多级标题，空标题不要保留；
-4) 如有“AI生成内容”，单独做 AI 概览块；
-5) 最后给我 文件路径+行号。
+4) 如有“AI生成内容”，单独做 AI 概览块。
 ```
 
 ## 本次会话沉淀的关键偏好
