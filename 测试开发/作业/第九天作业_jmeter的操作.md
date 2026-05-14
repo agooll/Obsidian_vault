@@ -27,3 +27,6 @@ jmeter的接口测试流程是这样的
 	3.执行测试用例脚本
 ### 作业5
 在测试计划下新增一个JDBC Connect的配置元件 然后在里面的DataBase URL填写响应的数据库的链接 然后输入数据库的username跟password 然后在测试计划下添加一个连接数据库的jar包
+### 参考答案
+![](assets/第九天作业_jmeter的操作/file-20260514224629573.png)
+![](assets/第九天作业_jmeter的操作/file-20260514224643363.png)
