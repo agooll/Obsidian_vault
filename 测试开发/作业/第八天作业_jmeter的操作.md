@@ -4,4 +4,4 @@
 2. 响应断言
 3. 大小断言
 ### 作业2
-在测试计划下新增一个JDBC Connect的配置元件 然后在里面的DataBa
+在测试计划下新增一个JDBC Connect的配置元件 然后在里面的DataBase URL填写响应的数据库的链接 然后输入数据库的username跟
