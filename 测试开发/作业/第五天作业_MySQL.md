@@ -2,7 +2,7 @@
 ### 作业一
 Navicat 连接数据库时，使用的是 MySQL 数据库所在服务器的 IP 地址
 ### 作业二
-```
+```MySQL
 CREATE TABLE student (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(20),
