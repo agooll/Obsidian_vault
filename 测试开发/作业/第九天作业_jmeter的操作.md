@@ -30,3 +30,4 @@ jmeter的接口测试流程是这样的
 ### 参考答案
 ![](assets/第九天作业_jmeter的操作/file-20260514224629573.png)
 ![](assets/第九天作业_jmeter的操作/file-20260514224643363.png)
+![](assets/第九天作业_jmeter的操作/file-20260514224652289.png)
