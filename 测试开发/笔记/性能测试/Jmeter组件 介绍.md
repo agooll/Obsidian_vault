@@ -1,6 +1,6 @@
 ### Concurrency Thread Group
 ![](assets/Jmeter组件%20介绍/file-20260516134707388.png)
-### 配置说明
+#### 配置说明
 Concurrency Thread Group 控制的是“并发用户数”。
 Target Concurrency 决定最终并发多少人；
 Ramp Up Time 决定多久升上去；
