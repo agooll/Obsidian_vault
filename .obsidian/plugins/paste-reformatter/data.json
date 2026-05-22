@@ -11,7 +11,7 @@
   "htmlRegexReplacements": [],
   "markdownRegexReplacements": [
     {
-      "pattern": "(?m)^(\\s*)(\\d+)\\.\\s+",
+      "pattern": "(?m)^(\\s*)(\\d+)\\.\\s*",
       "replacement": "$1[$2] "
     }
   ]
