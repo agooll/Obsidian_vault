@@ -12,7 +12,7 @@
   "markdownRegexReplacements": [
     {
       "pattern": "(?m)^(\\s*)(\\d+)\\.\\s+",
-      "replacement": "$1$2\\. "
+      "replacement": "$1[$2] "
     }
   ]
 }
