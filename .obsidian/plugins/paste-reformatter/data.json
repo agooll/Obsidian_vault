@@ -1,0 +1,18 @@
+{
+  "pasteOverride": true,
+  "showPasteNotifications": true,
+  "maxHeadingLevel": 1,
+  "removeEmptyElements": false,
+  "cascadeHeadingLevels": true,
+  "contextualCascade": true,
+  "stripLineBreaks": false,
+  "convertToSingleSpaced": false,
+  "removeEmptyLines": false,
+  "htmlRegexReplacements": [],
+  "markdownRegexReplacements": [
+    {
+      "pattern": "(?m)^(\\s*)(\\d+)\\.\\s*",
+      "replacement": "$1[$2] "
+    }
+  ]
+}
