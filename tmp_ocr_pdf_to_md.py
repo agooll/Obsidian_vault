@@ -26,6 +26,9 @@ def normalize_text(text: str) -> str:
 
 
 def is_code_line(text: str) -> bool:
+    plain = re.sub(r"^\d+\s*", "", text).strip()
+    chinese_count = sum("\u4e00" <= ch <= "\u9fff" for ch in plain)
+    english_count = sum("a" <= ch.lower() <= "z" for ch in plain)
     code_patterns = [
         r"^(from|import)\s+",
         r"^class\s+\w+",
@@ -40,15 +43,20 @@ def is_code_line(text: str) -> bool:
         r"^print\(",
         r"^logger\.",
         r"^self\.",
+        r"^connections\.",
+        r"^utility\.",
+        r"^FieldSchema\(",
+        r"^CollectionSchema\(",
+        r"^Collection\(",
+        r"^SentenceTransformer\(",
         r"^[A-Z_]{2,}\s*=",
-        r"^[a-zA-Z_][a-zA-Z0-9_]*\s*=",
+        r"^[a-zA-Z_][a-zA-Z0-9_]*\s*=\s*['\"\[{(]",
         r"^#",
     ]
-    if any(re.search(pattern, text) for pattern in code_patterns):
+    if any(re.search(pattern, plain) for pattern in code_patterns):
         return True
-    symbol_count = sum(text.count(ch) for ch in "()[]{}=:_")
-    english_count = sum("a" <= ch.lower() <= "z" for ch in text)
-    return symbol_count >= 3 and english_count >= 4
+    symbol_count = sum(plain.count(ch) for ch in "()[]{}=:_")
+    return chinese_count == 0 and symbol_count >= 4 and english_count >= 6
 
 
 def clean_bullet(text: str) -> str:
@@ -58,11 +66,11 @@ def clean_bullet(text: str) -> str:
 def heading_level(text: str, x: float, h: float, base_x: float, body_h: float, page_num: int) -> int:
     if page_num == 0 and text == "AI项目课堂笔记":
         return 1
-    if re.match(r"^\d+\.\d+\.\d+", text):
+    if re.match(r"^\d+\.\d+\.\d+(?![<>=])", text) and len(text) <= 32 and "：" not in text:
         return 4
-    if re.match(r"^\d+\.\d+", text):
+    if re.match(r"^\d+\.\d+(?![<>=])", text) and len(text) <= 32 and "：" not in text:
         return 3
-    if re.match(r"^\d+\.", text) and x <= base_x + 24 and len(text) <= 40:
+    if re.match(r"^\d+\.(?!\d)", text) and x <= base_x + 24 and len(text) <= 24 and "：" not in text:
         return 2
     if x <= base_x + 10 and h >= body_h * 1.25 and len(text) <= 24:
         return 2
@@ -74,6 +82,8 @@ def should_skip(text: str, y: float, page_num: int) -> bool:
         return True
     # 跳过第一页顶部的页面 UI 文案，保留正文标题。
     if page_num == 0 and y < 110 and text in {"软件测试", "昨天修改", "AI速览试用"}:
+        return True
+    if page_num == 0 and "软件测试" in text and "昨天修改" in text:
         return True
     return False
 
