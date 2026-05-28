@@ -24,5 +24,6 @@
     "editor:unindent-list",
     "editor:configure-toolbar",
     "editor:insert-codeblock"
-  ]
+  ],
+  "promptDelete": false
 }
