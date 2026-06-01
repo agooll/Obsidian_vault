@@ -27,3 +27,9 @@ print(s.split("一", 1)) # ['听君', '席话,如听一席话']
 将一作为分隔符
 maxsplit 最多分几次
 
+##### startswith()：判断开头 endswith()：判断结尾
+```Python
+s = "听君一席话,如听一席话"​
+print(s.startswith("听君"))​
+print(s.endswith("话"))
+```
