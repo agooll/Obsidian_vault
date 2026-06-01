@@ -203,8 +203,19 @@ print(t_info["hobby"]) # ['吹牛', '看电影']
 ##### 字典的常见操作
 ###### 增 使用变量名["键"] = 值时, 如果"键"在字典中不存在, 就会新增这个数据
 ```
-
+t_info = {"name": "杰哥", "sex": "男", "age": 18, "address": "广州", "hobby": ["吹牛", "看电影"]}​
+t_info["score"] = 10​
+print(t_info)
 ```
+###### 删, pop 和 clear 方法
+```python
+t_info = {"name": "杰哥", "sex": "男", "age": 18, "address": "广州", "hobby": ["吹牛", "看电影"]}​
+t_info.pop("age")​
+print(t_info)​
+t_info.clear()​
+print(t_info)
+```
+
 #### 面试题 
 ##### python中列表和元组的区别?[2]​
 列表是动态的, 列表中的数据支持各种增删改查的操作, 元组是静态的, 元祖中的数据只支持查询类操作, 可以理解为元组就是一个只读的列表​
