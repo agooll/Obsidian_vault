@@ -36,7 +36,9 @@ print(s.endswith("话")) #True
 #### **lower()：把英文字符变成小写**   **upper()：把英文字符变成大写**
 ```Python
 s = "Hello World"​
-print(s.lower())​
-print(s.upper())
+print(s.lower()) #hello world  
+print(s.upper()) #HELLO WORLD​
 ```
-#### isalpha() isdigit() 和 isalnum, 判断字符串中所有字符都是 字母, 数字, 字母或数字, 是则返回 True, 否则返回 False
+#### isalpha()判断是不是全是字母  isdigit()判断是不是全是数字  isalnum()判断是不是全是字母或数字
+
+
