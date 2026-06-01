@@ -234,9 +234,9 @@ print(key)​
 for value in t_info.values():​
 print(value)​
 for item in t_info.items():​
-print(item)​
+print(item)  # 元组类型​
 for key, value in t_info.items():​
-print(key, value)
+print(key, value) # key 是键，value 是值，类型取决于字典中原本的数据
 ```
 
 #### 面试题 
