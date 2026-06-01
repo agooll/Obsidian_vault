@@ -69,3 +69,14 @@ print("-".join(l)) # 广东省-广州市-天河区...
 name_list = ["张三", "李四", "王五"]
 ```
 列表可以储存不同类型的数据
+##### 列表的遍历
+```python
+name_list = ["张三", "李四", "王五"]​
+# for实现列表遍历
+for name in name_list:​
+print(name)​
+i = 0​
+while i < len(name_list):​
+print(name_list[i])​
+i += 1
+```
