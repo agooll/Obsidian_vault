@@ -30,6 +30,7 @@ maxsplit 最多分几次
 ##### startswith()：判断开头 endswith()：判断结尾
 ```Python
 s = "听君一席话,如听一席话"​
-print(s.startswith("听君"))​
-print(s.endswith("话"))
+print(s.startswith("听君")) #True​
+print(s.endswith("话")) #True
 ```
+##### lower() 和 upper(), 把字符串中的所有字符转换为 小写 或 大写 字符
