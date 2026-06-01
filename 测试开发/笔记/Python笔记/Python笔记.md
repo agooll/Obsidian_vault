@@ -48,4 +48,4 @@ print(s1.isdigit()) #False​
 print(s1.isalnum()) #True
 ```
 
-
+		##### Join用某个“分隔符”，把一堆字符串拼接成一个新的字符串。
