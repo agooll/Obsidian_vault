@@ -40,5 +40,13 @@ print(s.lower()) #hello world
 print(s.upper()) #HELLO WORLD​
 ```
 #### isalpha()判断是不是全是字母  isdigit()判断是不是全是数字  isalnum()判断是不是全是字母或数字
+```Python
+s1 = "helloworld"​
+s2 = "123"​
+s3 = "HelloWorld123"​
+print(s1.isalpha()) #True​
+print(s1.isdigit()) #False​
+print(s1.isalnum()) #True
+```
 
 
