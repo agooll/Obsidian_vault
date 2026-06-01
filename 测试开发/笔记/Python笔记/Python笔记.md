@@ -18,3 +18,9 @@ print(s.count("一席话")) #2
 print(s.count("一席话", 6, 11)) #1
 ```
 
+##### 字符串.split("分隔符", maxsplit)
+```python
+s = "听君一席话,如听一席话"
+print(s.split("一"))
+print(s.split("一", 1))
+```
