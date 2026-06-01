@@ -21,6 +21,9 @@ print(s.count("一席话", 6, 11)) #1
 ##### 字符串.split("分隔符", maxsplit)
 ```python
 s = "听君一席话,如听一席话"
-print(s.split("一"))
-print(s.split("一", 1))
+print(s.split("一"))  # ['听君', '席话,如听', '席话']
+print(s.split("一", 1)) # ['听君', '席话,如听一席话']
 ```
+将一作为分隔符
+maxsplit 最多分几次
+
