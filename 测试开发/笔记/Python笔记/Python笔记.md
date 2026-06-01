@@ -130,3 +130,20 @@ l = [1, 2, 3, 4]​
 l[1] = 3​
 print(l)
 ```
+##### 列表查询元素
+in 和 not in 用于判断列表中是否存在某数据, 成功为True, 失败为False
+```python
+l = [1, 2, 3, 4]​
+if 1 in l:​
+print("存在")​
+if 5 not in l:​
+print("不存在")
+```
+index 和 count, 与字符串中的用法相同
+```python
+l = [1, 2, 3, 4]​
+print(l.index(1))​
+print(l.count(1))​
+print(l.index(2))​
+print(l.count(2))
+```
