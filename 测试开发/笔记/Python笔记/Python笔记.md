@@ -26,20 +26,19 @@ print(s.split("一", 1)) # ['听君', '席话,如听一席话']
 ```
 将一作为分隔符
 maxsplit 最多分几次
-
 ##### startswith()：判断开头 endswith()：判断结尾
 ```Python
 s = "听君一席话,如听一席话"​
 print(s.startswith("听君")) #True​
 print(s.endswith("话")) #True
 ```
-#### **lower()：把英文字符变成小写**   **upper()：把英文字符变成大写**
+##### **lower()：把英文字符变成小写**   **upper()：把英文字符变成大写**
 ```Python
 s = "Hello World"​
 print(s.lower()) #hello world  
 print(s.upper()) #HELLO WORLD​
 ```
-#### isalpha()判断是不是全是字母  isdigit()判断是不是全是数字  isalnum()判断是不是全是字母或数字
+##### isalpha()判断是不是全是字母  isdigit()判断是不是全是数字  isalnum()判断是不是全是字母或数字
 ```Python
 s1 = "helloworld"​
 s2 = "123"​
