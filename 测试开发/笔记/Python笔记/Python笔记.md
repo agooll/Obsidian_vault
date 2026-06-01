@@ -33,11 +33,10 @@ s = "听君一席话,如听一席话"​
 print(s.startswith("听君")) #True​
 print(s.endswith("话")) #True
 ```
-
-
 #### **lower()：把英文字符变成小写**   **upper()：把英文字符变成大写**
 ```Python
 s = "Hello World"​
 print(s.lower())​
 print(s.upper())
 ```
+#### isalpha() isdigit() 和 isalnum, 判断字符串中所有字符都是 字母, 数字, 字母或数字, 是则返回 True, 否则返回 False
