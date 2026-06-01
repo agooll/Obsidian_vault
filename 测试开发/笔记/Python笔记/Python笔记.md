@@ -74,9 +74,12 @@ name_list = ["张三", "李四", "王五"]
 name_list = ["张三", "李四", "王五"]​
 # for实现列表遍历
 for name in name_list:​
-print(name)​
+print(name)
+# while实现列表遍历​
 i = 0​
 while i < len(name_list):​
 print(name_list[i])​
 i += 1
 ```
+##### 增
+##### append 可以把数据加到列表的末尾
