@@ -89,6 +89,6 @@ l.append(3)​
 l.append("4")​
 l.append(True)​
 l.append([5, 6])​
-print(l)
+print(l) #[1, 2, 3, '4', True, [5, 6]]
 ```
 ###### extend 可以把一个可迭代类型数据中的元素逐一添加到列表中 
