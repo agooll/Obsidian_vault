@@ -177,8 +177,9 @@ t = (1, 2, 3)​
 print(l[1])​
 print(t[1])​
 l[1] = 4​
-t[1] = 4
+t[1] = 4 # TypeError: 'tuple' object does not support item assignment
 ```
+![](assets/Python笔记/file-20260601211819023.png)
 ###### 对元组内的数据的操作只支持查询类操作, 如: index, count
 ```python
 t = (1, 2, 3, 4, 4, 5)​
