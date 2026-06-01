@@ -147,3 +147,4 @@ print(l.count(1))​
 print(l.index(2))​
 print(l.count(2))
 ```
+###### 排序
