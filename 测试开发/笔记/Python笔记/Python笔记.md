@@ -197,9 +197,10 @@ t_info = {"name": "杰哥", "sex": "男", "age": 18, "address": "广州", "hobby
 字典中找某个数据不是根据下标来找的, 是根据key, 如:
 ```python
 t_info = {"name": "杰哥", "sex": "男", "age": 18, "address": "广州", "hobby": ["吹牛", "看电影"]}​
-print(t_info["name"])​
-print(t_info["hobby"])
+print(t_info["name"]) #杰哥​
+print(t_info["hobby"]) # ['吹牛', '看电影']
 ```
+
 #### 面试题 
 ##### python中列表和元组的区别?[2]​
 列表是动态的, 列表中的数据支持各种增删改查的操作, 元组是静态的, 元祖中的数据只支持查询类操作, 可以理解为元组就是一个只读的列表​
