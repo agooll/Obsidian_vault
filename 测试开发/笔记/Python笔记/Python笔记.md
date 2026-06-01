@@ -121,5 +121,5 @@ print(l) # [2, 3]
 ```Python
 l = [1, 2, 3, 4]​
 l.remove(2)​
-print(l)
+print(l) # [1, 3, 4]
 ```
