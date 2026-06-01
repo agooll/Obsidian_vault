@@ -81,5 +81,14 @@ while i < len(name_list):​
 print(name_list[i])​
 i += 1
 ```
-##### 增
-##### append 可以把数据加到列表的末尾
+##### 列表增加元素的API
+###### append 可以把数据加到列表的末尾
+```Python
+l = [1, 2]​
+l.append(3)​
+l.append("4")​
+l.append(True)​
+l.append([5, 6])​
+print(l)
+```
+###### extend 可以把一个可迭代类型数据中的元素逐一添加到列表中 
