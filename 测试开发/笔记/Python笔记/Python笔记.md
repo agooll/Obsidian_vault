@@ -191,7 +191,7 @@ print(t.count(4))
 字典 (Dict), 语法上用{}来定义一个字典, 数据之间用,分割, 每个数据都是键值对的形式, 包含键名(key)和键值(value)两个部分, 例如:
 ```python
 d = {}​
-print(type(d))​
+print(type(d)) # <class 'dict'>​
 t_info = {"name": "杰哥", "sex": "男", "age": 18, "address": "广州", "hobby": ["吹牛", "看电影"]}
 ```
 字典中找某个数据不是根据下标来找的, 是根据key, 如:
