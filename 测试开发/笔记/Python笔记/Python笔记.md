@@ -52,6 +52,7 @@ print(s1.isalnum()) #True
 ```Python
 "分隔符".join(数据)  
 ```
+`join()` 里面的数据必须都是**字符串**。
 注意：  
 `join()` 前面的那个字符串，是**用来连接数据的分隔符**。
 ```Python
