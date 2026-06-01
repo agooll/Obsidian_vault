@@ -100,3 +100,9 @@ a.extend(b)​
 a.extend(c)​
 print(a) # [1, 2, 3, 4, 'a', 'b', 'c']​
 ```
+###### insert 可以在指定位置前插入数据
+```PYTHON
+l = [1, 2, 3, 4]​
+l.insert(2, "a")​
+print(l)
+```
