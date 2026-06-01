@@ -215,6 +215,29 @@ print(t_info)​
 t_info.clear()​
 print(t_info)
 ```
+###### 改, 和新增一样, 使用变量名["键"] = 值时, 如果"键"在字典中存在, 就好更新这个值
+###### 查 
+```python
+t_info = {"name": "杰哥", "sex": "男", "age": 18, "address": "广州", "hobby": ["吹牛", "看电影"]}​
+###### 查询某个键对应的值​
+###### print(t_info["a"]) # 键不存在时会报错​
+print(t_info.get("a")) # 键不存在时会返回 None​
+###### 查询字典的长度​
+print(len(t_info))​
+###### 查询字典中的键列表, 值列表, 键值对元组的列表 (以前返回列表, 新版本python不再返回列表类型, 但可以当做列表来使用)​
+print(t_info.keys())​
+print(t_info.values())​
+print(t_info.items())​
+###### 遍历​
+for key in t_info.keys():​
+print(key)​
+for value in t_info.values():​
+print(value)​
+for item in t_info.items():​
+print(item)​
+for key, value in t_info.items():​
+print(key, value)
+```
 
 #### 面试题 
 ##### python中列表和元组的区别?[2]​
