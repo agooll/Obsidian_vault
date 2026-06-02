@@ -1,4 +1,4 @@
-﻿# ui/main.py 详细解析
+# ui/main.py 详细解析
 
 > 学习目标：看懂 `ui/main.py` 在整个 Auto_prd_test_expert 项目里负责什么，以及用户从上传 PRD 到生成、评估、归档测试用例的完整流程。
 
