@@ -9,4 +9,9 @@ def func(*agrs):print(args)
 调用func(1,2,3) 输出(1,2,3)
 ```
 ** （双星号）接受多余的关键字参数
-会将形如`key = value
+会将形如`key = value`的参数打包成一个字典
+例如：
+```
+def func(**kwargs): print(kwargs)
+调用func
+```
