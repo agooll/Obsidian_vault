@@ -13,5 +13,5 @@ def func(*agrs):print(args)
 例如：
 ```
 def func(**kwargs): print(kwargs)
-调用func
+调用func(a=1,b=2) 输出{'a' = 1,'b'=2}
 ```
