@@ -1685,3 +1685,12 @@ core/llm_client.py
 3. extract_json_from_text()
 4. generate_summary()
 ```
+
+## 图谱关联
+
+- [[00_全库总览MOC]]
+- [[AI Agent学习总览MOC]]
+- [[学习]]
+- [[项目运行逻辑与代码跳转阅读法]]
+- [[AI项目]]
+- [[AI Agent测试面试题]]

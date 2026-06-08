@@ -203,3 +203,8 @@ quarrels in the cartel
 
 OPEC’s power diminished
 = OPEC 的影响力减弱了
+
+## 图谱关联
+
+- [[00_全库总览MOC]]
+- [[词汇总览MOC]]

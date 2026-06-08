@@ -242,3 +242,8 @@
 - **by remaining partially conscious**：通过保持部分清醒
 - **one hemisphere sleeps at a time**：一次只有半边大脑睡觉
 - **come up for air**：浮上来换气
+
+## 图谱关联
+
+- [[00_全库总览MOC]]
+- [[词汇总览MOC]]

@@ -8,3 +8,8 @@ Git: Pull
 写笔记
 Git: Commit all changes
 Git: Push
+
+## 图谱关联
+
+- [[00_全库总览MOC]]
+- [[AI操作规则]]
