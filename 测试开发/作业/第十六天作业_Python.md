@@ -41,3 +41,5 @@ def func(**kwargs): print(kwargs)
 3.类用来描述一类事物共同拥有的属性和行为
 4.对象是根据类创建出来的具体个体
 
+#### 参考答案
+https://kdocs.cn/l/cszTsBkyG2MQ
