@@ -8,3 +8,4 @@
 def func(*agrs):print(args)
 调用func(1,2,3) 输出(1,2,3)
 ```
+** （双星号）会将多个
