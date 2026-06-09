@@ -71,7 +71,9 @@ for row in worksheet.iter_rows(min_row=3, values_only=True):
     if dict_data["is_true"]:
         data[dict_data["case_id"]] = dict_data
 ```
+### **为什么要用 zip()**：
 
+在数据驱动中，我们需要把每一行数据封装成一个**字典**（例如：`{"method": "POST", "url": "/login"}`），这样 Pytest 的参数化 `@pytest.mark.parametrize` 才能方便地调用。 `zip()` 的作用是把“表头列表”和“数据行列表”**一一配对**。通过 `dict(zip(keys, row))`，你可以一行代码就生成一个标准的测试用例字典
 这样得到的是：
 
 ```python
@@ -112,3 +114,4 @@ for case in data:
 - 列表适合表示“多条记录”
 
 所以自动化框架里返回 `list[dict]`，是最符合测试数据场景的结构。
+
