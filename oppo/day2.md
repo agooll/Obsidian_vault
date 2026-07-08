@@ -10,3 +10,4 @@ frontmatter设置为alwaysApply：False 这样设置不会自动读取mdc文件
 ![](assets/day2/Screenshot_2026-07-08-19-09-28-12_231a2dc7aa482401e5fbf83f4031a1e4.jpg)
 ![](assets/day2/Screenshot_2026-07-08-19-10-12-90_231a2dc7aa482401e5fbf83f4031a1e4.jpg)
 ![](assets/day2/Screenshot_2026-07-08-19-10-12-90_231a2dc7aa482401e5fbf83f4031a1e4%201.jpg)
+![](assets/day2/Screenshot_2026-07-08-19-11-55-19.jpg)
