@@ -253,13 +253,13 @@ collection 相当于一个知识库命名空间。若资料入库时使用 `demo
 
 **提供的统一能力**
 
-| 接口 | 调用者 | 用途 |
-|---|---|---|
-| `generate_text_async(prompt)` | `TestTellerAgent` | 生成测试用例文本。 |
-| `generate_text(prompt)` | 自动化生成器 | 生成完整测试代码。 |
-| `get_embedding_sync(text)` | `ChromaDBManager` | 为文档或查询创建向量。 |
-| `get_provider_info()` | CLI / 调试 | 显示当前模型信息。 |
-| `validate_provider_config()` | 配置流程 | 预检查供应商配置。 |
+| 接口                            | 调用者               | 用途          |
+| ----------------------------- | ----------------- | ----------- |
+| `generate_text_async(prompt)` | `TestTellerAgent` | 生成测试用例文本。   |
+| `generate_text(prompt)`       | 自动化生成器            | 生成完整测试代码。   |
+| `get_embedding_sync(text)`    | `ChromaDBManager` | 为文档或查询创建向量。 |
+| `get_provider_info()`         | CLI / 调试          | 显示当前模型信息。   |
+| `validate_provider_config()`  | 配置流程              | 预检查供应商配置。   |
 
 **异常处理**
 
