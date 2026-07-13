@@ -53,18 +53,18 @@ testteller/main.py -> TestTellerAgent -> UnifiedDocumentParser / CodeLoader
 
 ## 2. 文件职责总览
 
-| 序号 | 文件 | 所属层 | 核心职责 | 主要产物 |
-|---|---|---|---|---|
-| 1 | `README.md` | 使用说明 | 定义项目能力、安装、命令与示例 | 人类可读的操作入口 |
-| 2 | `testteller/main.py` | 主 CLI / 编排层 | 提供入库、生成、状态、清理、配置命令 | 用例文件或终端结果 |
-| 3 | `generator_agent/agent/testteller_agent.py` | 用例生成业务层 | 组织资料入库、RAG 检索、模型生成与反馈回写 | 测试用例文本 / 向量记录 |
-| 4 | `core/data_ingestion/unified_document_parser.py` | 文档解析基础层 | 识别文档、抽取元数据、分块、解析用例 | `ParsedDocument` |
-| 5 | `core/vector_store/chromadb_manager.py` | 向量基础设施层 | 管理 Chroma collection、写入、检索、清理 | 相似文档与元数据 |
-| 6 | `core/llm/llm_manager.py` | 模型适配层 | 根据配置选择模型客户端并统一生成/嵌入接口 | 文本或 embedding |
-| 7 | `automator_agent/cli.py` | 自动化 CLI / 编排层 | 将用例文档转成可写出的自动化工程 | 输出目录中的代码文件 |
-| 8 | `automator_agent/rag_enhanced_generator.py` | 自动化代码生成层 | 结合 RAG 上下文生成、清理、校验、兜底代码 | 按类别拆分的测试文件 |
-| 9 | `automator_agent/application_context.py` | 应用知识发现层 | 从向量库抽取 API、UI、认证、模型、框架信息 | `ApplicationContext` |
-| 10 | `automator_agent/parser/markdown_parser.py` | 用例结构化层 | 把 Markdown 用例转为结构化 `TestCase` | `List[TestCase>` |
+| 序号  | 文件                                               | 所属层           | 核心职责                          | 主要产物                 |
+| --- | ------------------------------------------------ | ------------- | ----------------------------- | -------------------- |
+| 1   | `README.md`                                      | 使用说明          | 定义项目能力、安装、命令与示例               | 人类可读的操作入口            |
+| 2   | `testteller/main.py`                             | 主 CLI / 编排层   | 提供入库、生成、状态、清理、配置命令            | 用例文件或终端结果            |
+| 3   | `generator_agent/agent/testteller_agent.py`      | 用例生成业务层       | 组织资料入库、RAG 检索、模型生成与反馈回写       | 测试用例文本 / 向量记录        |
+| 4   | `core/data_ingestion/unified_document_parser.py` | 文档解析基础层       | 识别文档、抽取元数据、分块、解析用例            | `ParsedDocument`     |
+| 5   | `core/vector_store/chromadb_manager.py`          | 向量基础设施层       | 管理 Chroma collection、写入、检索、清理 | 相似文档与元数据             |
+| 6   | `core/llm/llm_manager.py`                        | 模型适配层         | 根据配置选择模型客户端并统一生成/嵌入接口         | 文本或 embedding        |
+| 7   | `automator_agent/cli.py`                         | 自动化 CLI / 编排层 | 将用例文档转成可写出的自动化工程              | 输出目录中的代码文件           |
+| 8   | `automator_agent/rag_enhanced_generator.py`      | 自动化代码生成层      | 结合 RAG 上下文生成、清理、校验、兜底代码       | 按类别拆分的测试文件           |
+| 9   | `automator_agent/application_context.py`         | 应用知识发现层       | 从向量库抽取 API、UI、认证、模型、框架信息      | `ApplicationContext` |
+| 10  | `automator_agent/parser/markdown_parser.py`      | 用例结构化层        | 把 Markdown 用例转为结构化 `TestCase` | `List[TestCase>`     |
 
 ## 3. 逐文件说明
 
