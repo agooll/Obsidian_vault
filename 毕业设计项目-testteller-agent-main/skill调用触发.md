@@ -36,3 +36,4 @@ flowchart TD
     O --> T[".learning-department/<br/>状态、证据、错题、复习队列"]
 ```
 
+![](assets/skill调用触发/file-20260719232956054.png)
