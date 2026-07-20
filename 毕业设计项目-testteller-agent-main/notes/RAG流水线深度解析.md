@@ -399,6 +399,15 @@ hybrid_retriever.py 里的 _decide_strategy 有哪几种策略？分别什么条
 2. 差一点 → 是 hybrid（混合），同时查本地+向量库，RRF 融合排序
 3. 不对 → 是 vector，先走向量检索，检索到的文档组装成 prompt 后才调 LLM，LLM 是最后一道防线
 
+四种策略设计哲学：
+
+| 策略 | 触发条件 | 设计思想 |
+|---|---|---|
+| **local_exact** | 精确命中唯一结果 | 「省」— 最小成本原则，已经稳了就别画蛇添足 |
+| **hybrid** | 本地有候选结果 | 「互补」— 本地候选做保底，向量语义做精排 |
+| **not_found** | 查精确实体但本地无 | 「止损」— 宁可少答，不要错答 |
+| **vector** | 模糊语义类查询 | 「对路」— 模糊语义问题就该用向量检索 |
+
 #### 最终理解
 四种策略：local_exact（精确命中唯一→不调 embedding 直接返回）、hybrid（本地有候选→双路检索+RRF 融合）、not_found（查精确实体但本地无→止损不走向量）、vector（模糊语义→纯向量检索）。LLM 不是第一道防线，是最后一道。
 
@@ -425,6 +434,37 @@ hybrid_retriever.py 里的 _decide_strategy 有哪几种策略？分别什么条
         return "not_found", "no_local_match"
 
     def _to_vector_items(self, results: dict) -> list[RetrievalItem]:
+```
+
+##### 策略决策树
+
+```mermaid
+flowchart TB
+    Q[用户查询] --> QA[QueryAnalyzer.analyze]
+    QA --> LI[LocalIndex.search]
+    LI --> DS{_decide_strategy}
+
+    DS -->|intent=LOCATE/FACT_LOOKUP<br>+ 精确命中唯一| LE[local_exact<br>直接返回本地结果]
+    DS -->|has_candidates=True| HY[hybrid<br>双路检索 + RRF 融合]
+    DS -->|exact_entity_requested<br>+ 本地空| NF[not_found<br>返回空，不走向量]
+    DS -->|intent=ANALYSIS/IMPACT<br>/SIMILARITY/GENERATE| VC[vector<br>纯向量语义检索]
+    DS -->|兜底| NF2[not_found<br>安全返回空]
+
+    LE --> R[组装最终结果]
+    HY --> RRF[RRF 融合]
+    VC --> RRF
+    NF --> R
+    NF2 --> R
+    RRF --> R
+    R --> GA[Generator Agent]
+    GA --> LLM[LLM 调用]
+    LLM --> QG[QualityGate]
+
+    style LE fill:#27ae60
+    style NF fill:#e74c3c
+    style NF2 fill:#e74c3c
+    style HY fill:#f39c12
+    style VC fill:#3498db
 ```
 
 #### 代码解释
@@ -483,7 +523,18 @@ flowchart TB
 用户质疑「embedding 很贵」的说法——向量生成不是用本地模型吗？而且有其他免费本地向量化方案吗？效果如何？多少维？
 
 #### AI 的回答
-验证代码发现：GEMINI 用 text-embedding-004（云端，按 token 计费），OPENAI 用 text-embedding-3-small（云端），Llama/Ollama 用 llama3.2:1b（本地，2048 维）。确实存在免费本地方案：BGE-M3（1024 维，中文最佳）、M3E-base（768 维，110MB 性价比之王）、all-MiniLM（384 维，33MB）。本地模型 MTEB 评分只比 OpenAI 差 1-2 个百分点，但在延迟（20-80ms vs 200-500ms）、成本（免费）、隐私上完胜。
+验证代码发现：GEMINI 用 text-embedding-004（云端，按 token 计费），OPENAI 用 text-embedding-3-small（云端），Llama/Ollama 用 llama3.2:1b（本地，2048 维）。确实存在免费本地方案：
+
+| 模型 | 通过 Ollama 拉取 | 输出维度 | 模型大小 | 中文效果 |
+|---|---|---|---|---|
+| **all-MiniLM-L6-v2** | `all-minilm:33m` | **384 维** | **33MB** | 一般（英文为主） |
+| **M3E-base** | `m3e-base` | **768 维** | **110MB** | ✅ 极好 |
+| **nomic-embed-text** | `nomic-embed-text` | **768 维** | 274MB | ✅ 不错 |
+| **llama3.2:1b**（本项目默认） | `llama3.2:1b` | **2048 维** | ~1.3GB | ✅ 不错 |
+| **BGE-M3** | `bge-m3` | **1024 维** | 560MB | 🏆 中文最佳 |
+| **text2vec-large-chinese** | `text2vec-large-chinese` | **1024 维** | ~1GB | 🏆 中文最佳 |
+
+本地模型 MTEB 评分只比 OpenAI 差 1-2 个百分点，但在延迟（20-80ms vs 200-500ms）、成本（免费）、隐私上完胜。
 
 #### 与主线的关系
 澄清了 embedding 成本的真实情况——取决于 provider 配置。
@@ -552,6 +603,81 @@ def fuse_results(local_items: list[RetrievalItem], vector_items: list[RetrievalI
 
 #### 代码解释
 展示 RRF 融合三步：合并去重 → 打分（exact_bonus + local_rrf + vector_rrf）→ 排序取 top N
+
+##### RRF 融合流程图
+```mermaid
+flowchart LR
+    subgraph "输入：两条检索结果"
+        L[LocalIndex 结果\n精确匹配\n有各自的分数和排名]
+        V[ChromaDB 结果\n语义匹配\n有各自的分数和排名]
+    end
+
+    subgraph "第一步：合并去重"
+        M[按 chunk_id 合并\n同一条文档两个来源都命中？\n→ 合并到一个对象里\n保留两套 rank 和 score]
+    end
+
+    subgraph "第二步：RRF 打分"
+        S[对每条文档算分]
+    end
+
+    subgraph "第三步：排序输出"
+        R[按总分降序\n取前 N 条]
+    end
+
+    L --> M
+    V --> M
+    M --> S
+    S --> R
+```
+
+##### 打分细节展开
+```mermaid
+flowchart TB
+    文档 --> 精确匹配
+    文档 --> 本地排名
+    文档 --> 向量排名
+
+    精确匹配 -->|得分 >= 0.98| 奖励[+1.0 奖励分]
+    精确匹配 -->|得分 < 0.98| 无[不加分]
+    本地排名 -->|有排名| 本地分[+ 1/60+rank]
+    本地排名 -->|无排名| 本地0[+ 0]
+    向量排名 -->|有排名| 向量分[+ 1/60+rank]
+    向量排名 -->|无排名| 向量0[+ 0]
+```
+
+##### 完整例子
+
+查询：`"E2E_LOGIN_001 登录测试"`，数据库里有 4 条文档：
+
+| 文档 | 本地命中？ | 本地分数 | 本地排名 | 向量命中？ | 向量排名 |
+|---|---|---|---|---|---|
+| **文档A**: E2E_LOGIN_001 登录成功 | ✅ 精确命中 | **0.99** | 第1 | ✅ | 第2 |
+| **文档B**: 登录失败处理 | ✅ | 0.65 | 第2 | ✅ | 第3 |
+| **文档C**: 登出流程 | ❌ | - | - | ✅ | 第1 |
+| **文档D**: 密码重置 | ❌ | - | - | ✅ | 第4 |
+
+```
+文档A → 奖励? 0.99 >= 0.98 ✅ → +1.0
+       → 本地第1 → +1/(60+1) = +0.016
+       → 向量第2 → +1/(60+2) = +0.016
+       = 总分: 1.032  🥇
+
+文档B → 奖励? 0.65 < 0.98 ❌ → +0
+       → 本地第2 → +1/62 = +0.016
+       → 向量第3 → +1/63 = +0.016
+       = 总分: 0.032  🥈
+
+文档C → 奖励? 无本地结果 → +0
+       → 向量第1 → +1/61 = +0.016
+       = 总分: 0.016  🥉
+
+文档D → 总分 0.008 → 被 cut（limit=3）
+```
+
+**最终排序**：
+1. 文档A — E2E_LOGIN_001 登录成功（精确命中 +1.0 奖励，稳稳第一）
+2. 文档B — 登录失败处理（双路都命中，第二）
+3. 文档C — 登出流程（纯语义，排最后）
 
 ### 20｜主线：3道诊断边界测试题
 
