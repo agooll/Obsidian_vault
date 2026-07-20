@@ -438,6 +438,36 @@ hybrid_retriever.py 里的 _decide_strategy 有哪几种策略？分别什么条
 #### AI 的回答
 四道防线：①LocalIndex 精确匹配(SQL) ②ChromaDB 向量语义搜索 ③RRF 融合排序 ④LLM 生成+QualityGate 校验。not_found 策略不调用 embedding（节省了向量生成开销），但 LLM 仍会被调用（context=空字符串），质量门禁大概率会拦截生成结果。核心是：宁可少答，不要错答。
 
+```mermaid
+flowchart TB
+    subgraph "第一道防线：本地精确检索（零 LLM 成本）"
+        A[用户查询] --> B[QueryAnalyzer 意图分类]
+        B --> C[LocalIndex SQLite 精确匹配]
+        C --> D{_decide_strategy 决策}
+    end
+
+    subgraph "第二道防线：向量语义检索"
+        D -->|local_exact| E[直接返回本地结果\n完全不调 embedding]
+        D -->|hybrid| F[查 ChromaDB 向量库\n语义相似度搜索]
+        D -->|vector| F
+        D -->|not_found| G[直接返回空\n不浪费 embedding]
+    end
+
+    subgraph "第三道防线：RRF 融合排序"
+        E --> H[组装最终结果]
+        F --> I[RRF 融合\n本地排名 + 向量排名]
+        G --> H
+        I --> H
+    end
+
+    subgraph "第四道防线：LLM 生成 + 质量门禁"
+        H --> J[Generator Agent\n组装 Prompt]
+        J --> K[LLM 调用\n生成回答]
+        K --> L[QualityGate 质量门禁\n语义一致性校验]
+        L --> M[最终输出]
+    end
+```
+
 #### 与主线的关系
 加深对 RAG 流水线层次化设计的理解。
 
