@@ -240,17 +240,17 @@ LocalIndex 是 ChromaDB 的伴生 SQLite 索引。写入时同步提取实体，
 
 已完成 RAG 流水线前段（检索层）的深入学习：
 
-| 模块                                   | 状态   | 核心要点                                                       |
-| ------------------------------------ | ---- | ---------------------------------------------------------- |
-| `retrieval_patterns.py`              | ✅ 完成 | 13 个正则变量集中管理，TOKEN_PATTERN 同时处理中英文                         |
-| `models.py`                          | ✅ 完成 | QueryAnalysis → LocalSearchResult → RetrievalResult 三层数据流转 |
-| `query_analyzer.py`                  | ✅ 完成 | 纯规则意图分类，if-elif 链，中文二元组轻量分词                                |
-| `local_index.py`                     | ✅ 完成 | SQLite 双表，读写分离，权重体系，幂等去重                                   |
-| `chromadb_manager.py`                | ⬜ 待学 | 向量库 + LocalIndex 写入协同                                      |
-| `hybrid_retriever.py`                | ⬜ 待学 | 4 种策略路由决策                                                  |
-| `result_fusion.py`                   | ⬜ 待学 | RRF 融合公式                                                   |
-| `testteller_agent.py` + `prompts.py` | ⬜ 待学 | Prompt 组装 + LLM + QualityGate                              |
-
+| 模块 | 状态 | 核心要点 |
+|---|---|---|
+| `retrieval_patterns.py` | ✅ 完成 | 13 个正则变量集中管理，TOKEN_PATTERN 同时处理中英文 |
+| `models.py` | ✅ 完成 | QueryAnalysis → LocalSearchResult → RetrievalResult 三层数据流转 |
+| `query_analyzer.py` | ✅ 完成 | 纯规则意图分类，if-elif 链，中文二元组轻量分词 |
+| `local_index.py` | ✅ 完成 | SQLite 双表，读写分离，权重体系，幂等去重 |
+| `chromadb_manager.py` | ⬜ 待学 | 向量库 + LocalIndex 写入协同 |
+| `hybrid_retriever.py` | ⬜ 待学 | 4 种策略路由决策 |
+| `result_fusion.py` | ⬜ 待学 | RRF 融合公式 |
+| `testteller_agent.py` + `prompts.py` | ⬜ 待学 | Prompt 组装 + LLM + QualityGate |
+aaaaa
 ## 容易再次混淆的地方
 
 1. **QueryAnalyzer 调不调 LLM**：零 LLM，纯规则，作者强调"Rule-based analyzer"
