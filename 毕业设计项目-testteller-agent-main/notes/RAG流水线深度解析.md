@@ -315,6 +315,16 @@ ChromaDBManager 内部持有 LocalIndex。写入文档时同时写两份：先�
 #### 代码或证据
 ChromaDB 负责语义相似度搜索（慢但模糊精准），LocalIndex 负责精确字段匹配（快但只认结构化字段）。
 
+LocalIndex 与 ChromaDB 对比：
+
+| 对比维度 | LocalIndex (SQLite) | ChromaDB (向量) |
+|---|---|---|
+| 匹配方式 | 精确匹配（test_id、api_path 等字段） | 语义相似度（余弦距离） |
+| 速度 | 极快（毫秒级 SQL 查询） | 慢（需 LLM 生成 embedding） |
+| 适用场景 | 搜 E2E_LOGIN_001、GET /api/user | 搜"类似登录失败的场景" |
+| 是否需要 LLM | ❌ 不需要 | ✅ 需要 |
+| 写入协作 | 作为 ChromaDB 的伴生索引同步写入 | 先写向量，成功后同步写 LocalIndex |
+
 #### 源代码：ChromaDBManager 初始化
 
 来源：`testteller/core/vector_store/chromadb_manager.py:37-60`
