@@ -749,6 +749,44 @@ diagonis 阶段完成，推进到 fundamentals 阶段。下一步：深入理解
 #### 代码或证据
 阶段推进完成：diagnosis → fundamentals
 
+---
+
+### 22｜复习：6 题知识回顾与错误纠正
+
+#### 我的疑惑
+2026-07-21 主动要求复习已学知识，AI 出了 6 道覆盖全部模块的回顾题。
+
+#### AI 的提问
+6 道题覆盖意图分类（GENERATE/FACT_LOOKUP）、策略路由（local_exact）、双写协同、RRF 融合公式、not_found 边界情况、self 关键字。
+
+#### 我的回答
+1）不会调 LLM，if-elif 关键字匹配，返回 FACT_LOOKUP
+2）local_exact 策略，不调 embedding，context 有内容，3-5ms
+3）先写 LocalIndex 再写 ChromaDB，原因不清楚
+4）精确命中+1.0 是因为比向量精准，速度快
+5）走向量语义检索，调 embedding，LLM 被调但 context 为空，QualityGate 拒绝
+6）print(a.count, b.count) → 输出 8 8
+
+#### AI 的反馈与纠正
+6 题中 2 道完全正确，4 道有误：
+
+| 题号 | 结果 | 错误原因 |
+|---|---|---|
+| 1️⃣ 意图分类 | ⚠️ 差一点 | "生成登录模块的测试用例"包含"生成""测试用例" → 匹配 **GENERATE**，不是 FACT_LOOKUP |
+| 2️⃣ 策略路由 | ✅ 正确 | — |
+| 3️⃣ 双写协同 | ❌ 顺序反了 | 先 **ChromaDB**（可能因 embedding 失败），成功后再写 LocalIndex（幂等 upsert）。向量写入失败不会污染 SQLite |
+| 4️⃣ RRF 融合 | ✅ 正确 | — |
+| 5️⃣ not_found | ❌ 走错路径 | intent=LOCATE 无实体 → **不走 vector**，走兜底 **not_found**。不调 embedding，LLM 被调但 context 空 |
+| 6️⃣ self | ❌ 计算错误 | a: 0→+5=5→+2=7；b: 0→+3=3。输出 **7 3**，不是 8 8 |
+
+#### 最终理解
+巩固了 4 个薄弱点：① GENERATE 触发条件是包含"生成""测试用例"等关键词 ② 双写写入顺序：先 ChromaDB（不稳定的路径）→ 后 LocalIndex（安全的幂等路径） ③ not_found 兜底 vs vector 语义检索的边界区分 ④ self 独立对象计数是各算各的，互不影响。
+
+#### 代码或证据
+薄弱点需重点复习：双写顺序、not_found 边界、GENERATE/FACT_LOOKUP 区分、self 计数
+
+---
+
 ## 模块总结
 
 已完成 RAG 流水线前段（检索层）的深入学习：
@@ -770,6 +808,9 @@ diagonis 阶段完成，推进到 fundamentals 阶段。下一步：深入理解
 2. **FACT_LOOKUP 和 LLM 的关系**：FACT_LOOKUP 只是意图分类结果，检索层全程不调 LLM。LLM 在 Generator Agent 里才调用
 3. **not_found 何时触发**：精确实体请求（test_id/api_path/symbols）+ 本地索引没找到，直接返回空，不走向量
 4. **写入和查询的协同**：写入时 ChromaDB 先写向量 → 同步写 LocalIndex；查询时 HybridRetriever 先查 SQLite 再决定是否查向量
+5. **GENERATE 和 FACT_LOOKUP 触发条件**：包含"生成""测试用例"等关键词时走 GENERATE，不是所有情况都兜底到 FACT_LOOKUP
+6. **not_found vs vector 边界情况**：intent=LOCATE 但无实体时走 not_found（兜底），不会走向量；只有意图为 ANALYSIS/IMPACT/SIMILARITY/GENERATE 时才走 vector
+7. **双写写入顺序**：先 ChromaDB（可能失败）→ 再 LocalIndex（幂等 upsert）。不是先 LocalIndex 再 ChromaDB
 
 ## 待复习问题
 
@@ -778,6 +819,8 @@ diagonis 阶段完成，推进到 fundamentals 阶段。下一步：深入理解
 3. RRF 融合（result_fusion.py）如何让精确结果排在语义结果之前？
 4. ChromaDB 写入时 Embedding 失败会怎样（看 chromadb_manager.py L147）？
 5. `TOKEN_PATTERN` 中 `[\u4e00-\u9fff]{2,}` 为什么要求至少 2 个中文？
+6. add_documents 写入时先写 ChromaDB 还是 LocalIndex？为什么？
+7. not_found 边界场景中，intent=LOCATE 但无实体会触发哪个策略分支？
 
 
 ### 本次整理 2026-07-20
@@ -788,3 +831,4 @@ diagonis 阶段完成，推进到 fundamentals 阶段。下一步：深入理解
 ## 复习记录
 - 2026-07-19：完成本模块第一次学习并落盘
 - 2026-07-20：追加 9 条学习记录
+- 2026-07-21：6 题知识回顾，4 道有误需巩固。薄弱点：① GENERATE vs FACT_LOOKUP 触发条件混淆 ② 双写写入顺序记反（先 ChromaDB 后 LocalIndex） ③ not_found 边界执行路径走错（不会走向量） ④ self 独立对象计数计算有误
