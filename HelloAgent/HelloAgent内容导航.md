@@ -42,3 +42,7 @@
 - [GitHub 仓库](https://github.com/datawhalechina/hello-agents)
 - [国内在线阅读](https://hello-agents.datawhale.cc/)
 - [国外在线阅读](https://datawhalechina.github.io/hello-agents)
+
+## 社区扩展章节
+
+[[Extra-Chapter|Extra-Chapter 社区扩展章节]]：收录 Agent 面试题、上下文工程、Dify、Agent Skills、GUI Agent、WebAgent、Agent 自进化等扩展内容。
