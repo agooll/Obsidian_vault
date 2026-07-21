@@ -785,6 +785,78 @@ diagonis 阶段完成，推进到 fundamentals 阶段。下一步：深入理解
 #### 代码或证据
 薄弱点需重点复习：双写顺序、not_found 边界、GENERATE/FACT_LOOKUP 区分、self 计数
 
+##### _decide_strategy 决策树（核心错误 1/3/5 涉及）
+
+```mermaid
+flowchart TB
+    Q[用户查询] --> QA[QueryAnalyzer.analyze]
+    QA --> LI[LocalIndex.search]
+    LI --> DS{_decide_strategy}
+
+    DS -->|intent=LOCATE/FACT_LOOKUP<br>+ 精确命中唯一| LE[local_exact\n直接返回本地结果]
+    DS -->|has_candidates=True| HY[hybrid\n双路检索 + RRF 融合]
+    DS -->|exact_entity_requested<br>+ 本地空| NF[not_found\n返回空，不走向量]
+    DS -->|intent=ANALYSIS/IMPACT<br>/SIMILARITY/GENERATE| VC[vector\n纯向量语义检索]
+    DS -->|兜底| NF2[not_found\n安全返回空]
+
+    style LE fill:#27ae60
+    style NF fill:#e74c3c
+    style NF2 fill:#e74c3c
+    style HY fill:#f39c12
+    style VC fill:#3498db
+
+    linkStyle 2,4 stroke:#e74c3c,stroke-width:2
+```
+
+> 🔴 红色路径是你答错的 **not_found** 分支 —— intent=LOCATE 但无实体时不走向量，走兜底 not_found
+
+#### 源代码：_decide_strategy 完整代码
+
+来源：`testteller/core/retrieval/hybrid_retriever.py:46-55`
+
+```python
+def _decide_strategy(self, intent, local_result):
+    # 规则1：精确命中唯一 → local_exact
+    if intent in {FACT_LOOKUP, LOCATE} and local_result.match_type == EXACT and local_result.unique:
+        return "local_exact", None
+    # 规则2：本地有候选 → hybrid
+    if local_result.has_candidates:
+        return "hybrid", "multiple_local_candidates"
+    # 规则3：查精确实体但本地无 → not_found
+    if local_result.exact_entity_requested and intent in {FACT_LOOKUP, LOCATE}:
+        return "not_found", "exact_entity_not_found"
+    # 规则4：分析类查询 → vector
+    if intent in {ANALYSIS, IMPACT, SIMILARITY, GENERATE}:
+        return "vector", "no_local_match"
+    # 规则5：兜底 → not_found
+    return "not_found", "no_local_match"
+```
+
+#### 代码解释
+5 条 if-elif 规则逐层判断：① 精确命中 → local_exact ② 有候选 → hybrid ③ 查实体无果 → not_found ④ 分析类 → vector ⑤ 兜底 → not_found。错题 1（intent 判断）看规则 4，错题 3（双写顺序）涉及 chromadb_manager.py，错题 5（边界路径）看规则 5 兜底。
+
+#### 源代码：add_documents 双写顺序
+
+来源：`testteller/core/vector_store/chromadb_manager.py:135-145`
+
+```python
+def add_documents(self, documents, metadatas=None, ids=None):
+    # ① 先生成所有文档的 embedding
+    embeddings = self.llm_manager.get_embeddings_sync(documents)
+    
+    # 检查 embedding 是否全部成功
+    if any(emb is None for emb in embeddings):
+        raise EmbeddingGenerationError(...)  # 失败则抛异常
+    
+    # ② 先写 ChromaDB（向量库）—— 这条路径可能失败
+    self.collection.add(embeddings=embeddings, documents=documents, ids=ids)
+    
+    # ③ 成功后，再写 LocalIndex（SQLite 精确索引）—— 幂等 upsert
+    self.local_index.add_documents(documents=documents, metadatas=metadatas, ids=ids)
+```
+
+> ⚠️ **错题 3 纠正**：先 ChromaDB → 后 LocalIndex。因为 ChromaDB 的 embedding 调用可能失败，如果先写 LocalIndex 会导致 SQLite 有数据但向量库没有，查出来不完整。
+
 ---
 
 ## 模块总结
