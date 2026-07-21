@@ -26,7 +26,20 @@ QueryAnalyzer 的 _classify_intent 就是"if '生成' in query → GENERATE"这�
 `testteller/core/retrieval/query_analyzer.py:L39-L50` — _classify_intent 方法
 
 ---
-
+```python
+def _classify_intent(self, lowered: str) -> QueryIntent:
+        if any(word in lowered for word in self._GENERATE_WORDS):#40
+            return QueryIntent.GENERATE#41
+        if any(word in lowered for word in self._IMPACT_WORDS):#42
+            return QueryIntent.IMPACT#43
+        if any(word in lowered for word in self._SIMILAR_WORDS):#44
+            return QueryIntent.SIMILARITY#45
+        if any(word in lowered for word in self._ANALYSIS_WORDS):#46
+            return QueryIntent.ANALYSIS#47
+        if any(word in lowered for word in self._LOCATE_WORDS):#48
+            return QueryIntent.LOCATE#49
+        return QueryIntent.FACT_LOOKUP#50
+```
 ### 02｜插问：query_analyzer.py L39-L50 的代码意义
 
 #### 插问内容
