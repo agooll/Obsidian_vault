@@ -717,7 +717,7 @@ flowchart TB
 1）local_exact 策略，但会调 embedding 因为 prompt 有其他语言
 2）走向量，调 embedding，按余弦距离排序
 3）前 3 条规则都不能命中，兜底喂给 LLM，质量门禁返回类似「请重新描述」
-
+	
 #### AI 的反馈与纠正
 1）策略对 ✅，调 embedding 错 ❌（local_exact 不调 embedding，纯 SQL），耗时 1-5 毫秒
 2）策略是 hybrid 不是纯向量 ❌（因为本地有候选），1 个查询向量 vs 全部文档向量 ❌
