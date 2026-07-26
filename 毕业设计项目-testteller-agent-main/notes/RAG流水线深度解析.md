@@ -22,24 +22,35 @@
 #### 最终理解
 QueryAnalyzer 的 _classify_intent 就是"if '生成' in query → GENERATE"这种级别。提取信息也是正则（HTTP_METHOD_PATTERN、TEST_ID_PATTERN 等）。零 LLM 调用，微秒级。
 
-#### 代码或证据
-`testteller/core/retrieval/query_analyzer.py:L39-L50` — _classify_intent 方法
+<!-- code-required: true -->
+#### 代码
+#### 源代码：_classify_intent 方法
 
----
+来源：`testteller/core/retrieval/query_analyzer.py:39-50`
+
 ```python
 def _classify_intent(self, lowered: str) -> QueryIntent:
-        if any(word in lowered for word in self._GENERATE_WORDS):#40
-            return QueryIntent.GENERATE#41
-        if any(word in lowered for word in self._IMPACT_WORDS):#42
-            return QueryIntent.IMPACT#43
-        if any(word in lowered for word in self._SIMILAR_WORDS):#44
-            return QueryIntent.SIMILARITY#45
-        if any(word in lowered for word in self._ANALYSIS_WORDS):#46
-            return QueryIntent.ANALYSIS#47
-        if any(word in lowered for word in self._LOCATE_WORDS):#48
-            return QueryIntent.LOCATE#49
-        return QueryIntent.FACT_LOOKUP#50
+    if any(word in lowered for word in self._GENERATE_WORDS):  # 40
+        return QueryIntent.GENERATE                             # 41
+    if any(word in lowered for word in self._IMPACT_WORDS):    # 42
+        return QueryIntent.IMPACT                               # 43
+    if any(word in lowered for word in self._SIMILAR_WORDS):   # 44
+        return QueryIntent.SIMILARITY                           # 45
+    if any(word in lowered for word in self._ANALYSIS_WORDS):  # 46
+        return QueryIntent.ANALYSIS                             # 47
+    if any(word in lowered for word in self._LOCATE_WORDS):    # 48
+        return QueryIntent.LOCATE                               # 49
+    return QueryIntent.FACT_LOOKUP                              # 50
 ```
+
+#### 代码解释
+纯规则 if-elif 优先级链：GENERATE → IMPACT → SIMILARITY → ANALYSIS → LOCATE → FACT_LOOKUP（兜底）。零 LLM 调用，微秒级。
+
+#### 证据
+`testteller/core/retrieval/query_analyzer.py:L39-L50` — _classify_intent 方法，验证了纯规则引擎设计
+
+---
+
 ### 02｜插问：query_analyzer.py L39-L50 的代码意义
 
 #### 插问内容
@@ -62,6 +73,15 @@ def _classify_intent(self, lowered: str) -> QueryIntent:
 #### 对主线的影响
 无影响，加深对意图分类器的理解。
 
+#### 主线位置
+在讲解完 QueryAnalyzer 是纯规则引擎后，用户要求逐行解释代码。
+
+#### 代码
+本条无代码关联。
+
+#### 证据
+理解确认：_classify_intent 是顺序敏感的 if-elif 优先级链
+
 ---
 
 ### 03｜主线：FACT_LOOKUP 到 LLM 的调用链
@@ -81,8 +101,11 @@ def _classify_intent(self, lowered: str) -> QueryIntent:
 #### 最终理解
 检索层零 LLM → 拿到文档 → 填入 Prompt → 才调 LLM。Generator Agent 的 `generate_test_cases` 方法里调用 `llm_manager.generate_text_async(prompt)` 才是真正调 LLM 的地方。
 
-#### 代码或证据
-`testteller/generator_agent/agent/testteller_agent.py:L302-L354` — generate_test_cases 方法
+#### 代码
+本条无代码关联。
+
+#### 证据
+`testteller/generator_agent/agent/testteller_agent.py:L302-L354` — generate_test_cases 方法，验证 LLM 调用时机
 
 ---
 
@@ -108,7 +131,10 @@ def _classify_intent(self, lowered: str) -> QueryIntent:
 #### 最终理解
 检索零命中 → Prompt 只有 query → LLM 全靠通用知识硬编。质量差但不会崩。后续有 QualityGate 做双重评分（确定性规则 + AI 语义评审）。
 
-#### 代码或证据
+#### 代码
+本条无代码关联。
+
+#### 证据
 待补充
 
 ---
@@ -130,7 +156,10 @@ def _classify_intent(self, lowered: str) -> QueryIntent:
 #### 最终理解
 `_decide_strategy` 第三分支：`exact_entity_requested=True` 且 `intent in {LOCATE, FACT_LOOKUP}` 但本地没找到 → not_found。用户指名道姓找精确 ID，精确索引说没有，那就是没有。不走向量搜索碰运气。
 
-#### 代码或证据
+#### 代码
+本条无代码关联。
+
+#### 证据
 `testteller/core/retrieval/hybrid_retriever.py:L51-L52` — not_found 分支
 
 ---
@@ -148,13 +177,15 @@ def _classify_intent(self, lowered: str) -> QueryIntent:
 
 #### AI 的反馈与纠正
 验证 evidence 通过，TRANSITION_APPROVED diagnosis。提出诊断测试题：
-
 查询 1: "生成登录模块的测试用例" — 需要预测意图、提取信息、检索策略等。
 
 #### 最终理解
 用户同意进入 diagnosis，但随后要求先回到代码做完整复习再做题。
 
-#### 代码或证据
+#### 代码
+本条无代码关联。
+
+#### 证据
 待补充
 
 ---
@@ -172,6 +203,15 @@ def _classify_intent(self, lowered: str) -> QueryIntent:
 
 #### 对主线的影响
 诊断测试暂停，转为代码深度复习。
+
+#### 主线位置
+在 diagnosis 阶段开始后，用户要求先回到代码复习。
+
+#### 代码
+本条无代码关联。
+
+#### 证据
+诊断测试暂停，代码深度复习开始
 
 ---
 
@@ -192,7 +232,10 @@ def _classify_intent(self, lowered: str) -> QueryIntent:
 #### 最终理解
 已完成 retrieval_patterns、models、query_analyzer 三个模块的逐行解析。
 
-#### 代码或证据
+#### 代码
+本条无代码关联。
+
+#### 证据
 待补充
 
 ---
@@ -225,6 +268,15 @@ L5-L19 每一段定义的是什么？变量名含义看不懂。
 #### 对主线的影响
 无影响，加深对正则系统设计的理解。
 
+#### 主线位置
+在逐模块解析过程中，用户对正则变量含义提出疑问。
+
+#### 代码
+本条无代码关联。
+
+#### 证据
+`testteller/core/retrieval/retrieval_patterns.py` — 13 个正则变量定义
+
 ---
 
 ### 10｜插问：正则表达式 TEST_ID_PATTERN 语法
@@ -247,6 +299,15 @@ L5-L19 每一段定义的是什么？变量名含义看不懂。
 
 #### 对主线的影响
 无影响，基础语法查漏补缺。
+
+#### 主线位置
+在讲解完 retrieval_patterns 变量含义后，用户要求进一步解释正则语法。
+
+#### 代码
+本条无代码关联。
+
+#### 证据
+正则语法验证通过：`\b(?:E2E|INT|TECH|MOCK)_[A-Z0-9_]+\b` 匹配 E2E_LOGIN_001 但不匹配 ABC_test
 
 ---
 
@@ -278,8 +339,11 @@ L5-L19 每一段定义的是什么？变量名含义看不懂。
 #### 最终理解
 LocalIndex 是 ChromaDB 的伴生 SQLite 索引。写入时同步提取实体，查询时精确/部分匹配获得权重分数，为 HybridRetriever 的策略路由提供基础数据。
 
-#### 代码或证据
-`testteller/core/retrieval/local_index.py`
+#### 代码
+本条无代码关联。
+
+#### 证据
+`testteller/core/retrieval/local_index.py` — LocalIndex 完整实现
 `testteller/core/vector_store/chromadb_manager.py:L203-L208` — 写入协同
 
 ---
@@ -301,12 +365,13 @@ LocalIndex 是 ChromaDB 的伴生 SQLite 索引。写入时同步提取实体，
 #### 最终理解
 本次学习到此为止。下次继续从 chromadb_manager.py → hybrid_retriever.py → result_fusion.py 推进。
 
-#### 代码或证据
+#### 代码
+本条无代码关联。
+
+#### 证据
 待补充
 
 ---
-
-<!-- capture-digest: 88bd9763c6e4031aefc276a0a33d544e95b6593b15e823e7b97313a5c74c720e -->
 
 ### 13｜主线：ChromaDBManager 向量存储管理器
 
@@ -325,9 +390,36 @@ ChromaDB 是本地向量数据库，负责语义切分分块后存入向量库�
 #### 最终理解
 ChromaDBManager 内部持有 LocalIndex。写入文档时同时写两份：先调 LLM 生成 embedding → 写入 ChromaDB 向量库 → 再同步写入 LocalIndex（SQLite 精确索引）。查询时先走本地 SQL 再看要不要走向量。
 
-#### 代码或证据
-ChromaDB 负责语义相似度搜索（慢但模糊精准），LocalIndex 负责精确字段匹配（快但只认结构化字段）。
+<!-- code-required: true -->
+#### 代码
+#### 源代码：ChromaDBManager 初始化
 
+来源：`testteller/core/vector_store/chromadb_manager.py:37-60`
+
+```python
+def __init__(self, llm_manager, collection_name=None, persist_directory=None, host=None, port=None, use_remote=None):
+    self.llm_manager = llm_manager
+    # Get configuration from settings if available, otherwise use defaults/parameters
+    try:
+        settings = get_settings()
+        self.collection_name = collection_name or settings.get("chromadb.collection_name", "test_cases")
+        self.persist_directory = persist_directory or settings.get("chromadb.persist_directory", "./chromadb_data")
+        self.host = host or settings.get("chromadb.host", None)
+        self.port = port or settings.get("chromadb.port", None)
+        self.use_remote = use_remote if use_remote is not None else settings.get("chromadb.use_remote", False)
+    except Exception:
+        self.collection_name = collection_name or "test_cases"
+        self.persist_directory = persist_directory or "./chromadb_data"
+    self.client = self._initialize_client()
+    self.embedding_function = self._create_embedding_function()
+    self.collection = self._get_or_create_collection()
+    self.local_index = LocalIndex(self.persist_directory)
+```
+
+#### 代码解释
+ChromaDBManager 初始化时从配置读取参数，初始化 ChromaDB 客户端、embedding 函数、集合，并创建伴生的 LocalIndex（SQLite 精确索引）。
+
+#### 证据
 LocalIndex 与 ChromaDB 对比：
 
 | 对比维度 | LocalIndex (SQLite) | ChromaDB (向量) |
@@ -338,39 +430,7 @@ LocalIndex 与 ChromaDB 对比：
 | 是否需要 LLM | ❌ 不需要 | ✅ 需要 |
 | 写入协作 | 作为 ChromaDB 的伴生索引同步写入 | 先写向量，成功后同步写 LocalIndex |
 
-#### 源代码：ChromaDBManager 初始化
-
-来源：`testteller/core/vector_store/chromadb_manager.py:37-60`
-
-```python
-    def __init__(
-        self,
-        llm_manager: LLMManager,
-        collection_name: Optional[str] = None,
-        persist_directory: Optional[str] = None,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
-        use_remote: Optional[bool] = None
-    ):
-        """
-        Initialize ChromaDB manager with configuration from settings or parameters.
-
-        Args:
-            llm_manager: Instance of LLMManager for embeddings
-            collection_name: Name of the ChromaDB collection (optional)
-            persist_directory: Directory for ChromaDB persistence (optional)
-            host: Host for remote ChromaDB (optional)
-            port: Port for remote ChromaDB (optional)
-            use_remote: Whether to use remote ChromaDB (optional)
-        """
-        self.llm_manager = llm_manager
-
-        # Get configuration from settings if available, otherwise use defaults/parameters
-        try:
-```
-
-#### 代码解释
-展示 ChromaDBManager 初始化时配置、客户端、embedding 函数和集合创建
+---
 
 ### 14｜插问：Python self 关键字
 
@@ -389,6 +449,14 @@ self 就是「我自己」——它指代当前正在被操作的「这个实例
 #### 主线位置
 刚讲完 ChromaDBManager 的 __init__ 方法，解释了 self.collection_name、self.client 等属性的绑定。
 
+#### 代码
+本条无代码关联。
+
+#### 证据
+self 练习题验证：a.add(3)→a.count=3, b.add(5)→b.count=5, a.add(2)→a.count=5。a 和 b 独立计数互不影响。
+
+---
+
 ### 15｜插问：self 练习题：Counter 类
 
 #### 插问内容
@@ -406,6 +474,14 @@ self 概念的巩固练习。
 #### 主线位置
 在 ChromaDBManager 学习过程中插入的 self 练习。
 
+#### 代码
+本条无代码关联。
+
+#### 证据
+self 独立对象计数理解验证通过
+
+---
+
 ### 16｜主线：_decide_strategy 策略路由决策
 
 #### 我的疑惑
@@ -422,8 +498,6 @@ hybrid_retriever.py 里的 _decide_strategy 有哪几种策略？分别什么条
 2. 差一点 → 是 hybrid（混合），同时查本地+向量库，RRF 融合排序
 3. 不对 → 是 vector，先走向量检索，检索到的文档组装成 prompt 后才调 LLM，LLM 是最后一道防线
 
-四种策略设计哲学：
-
 | 策略 | 触发条件 | 设计思想 |
 |---|---|---|
 | **local_exact** | 精确命中唯一结果 | 「省」— 最小成本原则，已经稳了就别画蛇添足 |
@@ -434,64 +508,37 @@ hybrid_retriever.py 里的 _decide_strategy 有哪几种策略？分别什么条
 #### 最终理解
 四种策略：local_exact（精确命中唯一→不调 embedding 直接返回）、hybrid（本地有候选→双路检索+RRF 融合）、not_found（查精确实体但本地无→止损不走向量）、vector（模糊语义→纯向量检索）。LLM 不是第一道防线，是最后一道。
 
-#### 代码或证据
-核心设计思想：能用 SQL 解决问题的绝不调 embedding，能用 embedding 解决的绝不调 LLM。
-
+<!-- code-required: true -->
+#### 代码
 #### 源代码：_decide_strategy 完整代码
 
 来源：`testteller/core/retrieval/hybrid_retriever.py:46-55`
-上下文范围：L44-L57
 
 ```python
-        )
-
-    def _decide_strategy(self, intent: QueryIntent, local_result) -> Tuple[str, Optional[str]]:
-        if intent in {QueryIntent.FACT_LOOKUP, QueryIntent.LOCATE} and local_result.match_type == MatchType.EXACT and local_result.unique:
-            return "local_exact", None
-        if local_result.has_candidates:
-            return "hybrid", "multiple_local_candidates" if not local_result.unique else "intent_requires_context"
-        if local_result.exact_entity_requested and intent in {QueryIntent.FACT_LOOKUP, QueryIntent.LOCATE}:
-            return "not_found", "exact_entity_not_found"
-        if intent in {QueryIntent.ANALYSIS, QueryIntent.IMPACT, QueryIntent.SIMILARITY, QueryIntent.GENERATE}:
-            return "vector", "no_local_match" if not local_result.has_candidates else None
-        return "not_found", "no_local_match"
-
-    def _to_vector_items(self, results: dict) -> list[RetrievalItem]:
-```
-
-##### 策略决策树
-
-```mermaid
-flowchart TB
-    Q[用户查询] --> QA[QueryAnalyzer.analyze]
-    QA --> LI[LocalIndex.search]
-    LI --> DS{_decide_strategy}
-
-    DS -->|intent=LOCATE/FACT_LOOKUP<br>+ 精确命中唯一| LE[local_exact<br>直接返回本地结果]
-    DS -->|has_candidates=True| HY[hybrid<br>双路检索 + RRF 融合]
-    DS -->|exact_entity_requested<br>+ 本地空| NF[not_found<br>返回空，不走向量]
-    DS -->|intent=ANALYSIS/IMPACT<br>/SIMILARITY/GENERATE| VC[vector<br>纯向量语义检索]
-    DS -->|兜底| NF2[not_found<br>安全返回空]
-
-    LE --> R[组装最终结果]
-    HY --> RRF[RRF 融合]
-    VC --> RRF
-    NF --> R
-    NF2 --> R
-    RRF --> R
-    R --> GA[Generator Agent]
-    GA --> LLM[LLM 调用]
-    LLM --> QG[QualityGate]
-
-    style LE fill:#27ae60
-    style NF fill:#e74c3c
-    style NF2 fill:#e74c3c
-    style HY fill:#f39c12
-    style VC fill:#3498db
+def _decide_strategy(self, intent, local_result):
+    # 规则1：精确命中唯一 → local_exact
+    if intent in {FACT_LOOKUP, LOCATE} and local_result.match_type == EXACT and local_result.unique:
+        return "local_exact", None
+    # 规则2：本地有候选 → hybrid
+    if local_result.has_candidates:
+        return "hybrid", "multiple_local_candidates"
+    # 规则3：查精确实体但本地无 → not_found
+    if local_result.exact_entity_requested and intent in {FACT_LOOKUP, LOCATE}:
+        return "not_found", "exact_entity_not_found"
+    # 规则4：分析类查询 → vector
+    if intent in {ANALYSIS, IMPACT, SIMILARITY, GENERATE}:
+        return "vector", "no_local_match"
+    # 规则5：兜底 → not_found
+    return "not_found", "no_local_match"
 ```
 
 #### 代码解释
-4 个 if-elif 分支和 1 个兜底，对应 5 条执行路径
+5 条 if-elif 规则逐层判断：① 精确命中 → local_exact ② 有候选 → hybrid ③ 查实体无果 → not_found ④ 分析类 → vector ⑤ 兜底 → not_found
+
+#### 证据
+核心设计思想：能用 SQL 解决问题的绝不调 embedding，能用 embedding 解决的绝不调 LLM。
+
+---
 
 ### 17｜插问：四道防线设计与 not_found 兜底
 
@@ -500,36 +547,6 @@ flowchart TB
 
 #### AI 的回答
 四道防线：①LocalIndex 精确匹配(SQL) ②ChromaDB 向量语义搜索 ③RRF 融合排序 ④LLM 生成+QualityGate 校验。not_found 策略不调用 embedding（节省了向量生成开销），但 LLM 仍会被调用（context=空字符串），质量门禁大概率会拦截生成结果。核心是：宁可少答，不要错答。
-
-```mermaid
-flowchart TB
-    subgraph "第一道防线：本地精确检索（零 LLM 成本）"
-        A[用户查询] --> B[QueryAnalyzer 意图分类]
-        B --> C[LocalIndex SQLite 精确匹配]
-        C --> D{_decide_strategy 决策}
-    end
-
-    subgraph "第二道防线：向量语义检索"
-        D -->|local_exact| E[直接返回本地结果\n完全不调 embedding]
-        D -->|hybrid| F[查 ChromaDB 向量库\n语义相似度搜索]
-        D -->|vector| F
-        D -->|not_found| G[直接返回空\n不浪费 embedding]
-    end
-
-    subgraph "第三道防线：RRF 融合排序"
-        E --> H[组装最终结果]
-        F --> I[RRF 融合\n本地排名 + 向量排名]
-        G --> H
-        I --> H
-    end
-
-    subgraph "第四道防线：LLM 生成 + 质量门禁"
-        H --> J[Generator Agent\n组装 Prompt]
-        J --> K[LLM 调用\n生成回答]
-        K --> L[QualityGate 质量门禁\n语义一致性校验]
-        L --> M[最终输出]
-    end
-```
 
 #### 与主线的关系
 加深对 RAG 流水线层次化设计的理解。
@@ -540,13 +557,21 @@ flowchart TB
 #### 主线位置
 在 _decide_strategy 四种策略刚刚讲解完时插入。
 
+#### 代码
+本条无代码关联。
+
+#### 证据
+四道防线设计验证：LocalIndex(SQL) → ChromaDB(向量) → RRF(融合) → LLM+QualityGate(生成+校验)
+
+---
+
 ### 18｜插问：本地 embedding 模型 vs 云端
 
 #### 插问内容
 用户质疑「embedding 很贵」的说法——向量生成不是用本地模型吗？而且有其他免费本地向量化方案吗？效果如何？多少维？
 
 #### AI 的回答
-验证代码发现：GEMINI 用 text-embedding-004（云端，按 token 计费），OPENAI 用 text-embedding-3-small（云端），Llama/Ollama 用 llama3.2:1b（本地，2048 维）。确实存在免费本地方案：
+验证代码发现：GEMINI 用 text-embedding-004（云端，按 token 计费），OPENAI 用 text-embedding-3-small（云端），Llama/Ollama 用 llama3.2:1b（本地，2048 维）。
 
 | 模型 | 通过 Ollama 拉取 | 输出维度 | 模型大小 | 中文效果 |
 |---|---|---|---|---|
@@ -568,6 +593,14 @@ flowchart TB
 #### 主线位置
 在解释《四道防线》中 not_found 节约 embedding 成本时，用户提出质疑。
 
+#### 代码
+本条无代码关联。
+
+#### 证据
+`testteller/core/constants.py` — DEFAULT_GEMINI_EMBEDDING_MODEL/text-embedding-004, DEFAULT_OPENAI_EMBEDDING_MODEL/text-embedding-3-small, DEFAULT_LLAMA_EMBEDDING_MODEL/llama3.2:1b
+
+---
+
 ### 19｜主线：RRF 排名融合原理
 
 #### 我的疑惑
@@ -585,17 +618,13 @@ exact_bonus = 1.0 的作用是什么？比如本地排名第 1 但分数 0.99 �
 #### 最终理解
 RRF 核心：不看分数看排名，1/(60+rank) 算分。exact_bonus=1.0 是给精确命中的文档一个大奖励，确保精确匹配永远排第一。双路都命中的文档会叠加分数。最终按总分降序取 top N。
 
-#### 代码或证据
-RRF 公式的设计哲学：精确命中大力推上去，模糊匹配公平按排名算分，两套都命中的叠加排更前。
-
+<!-- code-required: true -->
+#### 代码
 #### 源代码：fuse_results 完整代码
 
 来源：`testteller/core/retrieval/result_fusion.py:6-31`
-上下文范围：L4-L31
 
 ```python
-
-
 def fuse_results(local_items: list[RetrievalItem], vector_items: list[RetrievalItem], limit: int) -> list[RetrievalItem]:
     """Use RRF rather than mixing incompatible rule scores and vector distances."""
     merged: dict[str, RetrievalItem] = {}
@@ -625,28 +654,30 @@ def fuse_results(local_items: list[RetrievalItem], vector_items: list[RetrievalI
 ```
 
 #### 代码解释
-展示 RRF 融合三步：合并去重 → 打分（exact_bonus + local_rrf + vector_rrf）→ 排序取 top N
+RRF 融合三步：① 合并去重（按 chunk_id） ② 打分（exact_bonus + local_rrf + vector_rrf） ③ 排序取 top N。
+
+exact_bonus=1.0 的设计意图：RRF 基础分只有 1/(60+rank) ≈ 0.016，加上 +1.0 奖励后精确命中文档跃升到 1.016 分，确保精确匹配绝对优先。
+
+#### 证据
+RRF 公式的设计哲学：精确命中大力推上去，模糊匹配公平按排名算分，两套都命中的叠加排更前。
 
 ##### RRF 融合流程图
+
 ```mermaid
 flowchart LR
     subgraph "输入：两条检索结果"
         L[LocalIndex 结果\n精确匹配\n有各自的分数和排名]
         V[ChromaDB 结果\n语义匹配\n有各自的分数和排名]
     end
-
     subgraph "第一步：合并去重"
         M[按 chunk_id 合并\n同一条文档两个来源都命中？\n→ 合并到一个对象里\n保留两套 rank 和 score]
     end
-
     subgraph "第二步：RRF 打分"
         S[对每条文档算分]
     end
-
     subgraph "第三步：排序输出"
         R[按总分降序\n取前 N 条]
     end
-
     L --> M
     V --> M
     M --> S
@@ -654,12 +685,12 @@ flowchart LR
 ```
 
 ##### 打分细节展开
+
 ```mermaid
 flowchart TB
     文档 --> 精确匹配
     文档 --> 本地排名
     文档 --> 向量排名
-
     精确匹配 -->|得分 >= 0.98| 奖励[+1.0 奖励分]
     精确匹配 -->|得分 < 0.98| 无[不加分]
     本地排名 -->|有排名| 本地分[+ 1/60+rank]
@@ -702,6 +733,8 @@ flowchart TB
 2. 文档B — 登录失败处理（双路都命中，第二）
 3. 文档C — 登出流程（纯语义，排最后）
 
+---
+
 ### 20｜主线：3道诊断边界测试题
 
 #### 我的疑惑
@@ -717,7 +750,7 @@ flowchart TB
 1）local_exact 策略，但会调 embedding 因为 prompt 有其他语言
 2）走向量，调 embedding，按余弦距离排序
 3）前 3 条规则都不能命中，兜底喂给 LLM，质量门禁返回类似「请重新描述」
-	
+
 #### AI 的反馈与纠正
 1）策略对 ✅，调 embedding 错 ❌（local_exact 不调 embedding，纯 SQL），耗时 1-5 毫秒
 2）策略是 hybrid 不是纯向量 ❌（因为本地有候选），1 个查询向量 vs 全部文档向量 ❌
@@ -726,8 +759,13 @@ flowchart TB
 #### 最终理解
 全部理解已纠正为正确答案。完整覆盖了：local_exact（完全不调 embedding）、hybrid（双路+RRF 融合）、not_found（documents=[]→context=""→LLM 空上下文→QualityGate REJECTED）三种场景。
 
-#### 代码或证据
+#### 代码
+本条无代码关联。
+
+#### 证据
 三道题覆盖了三种核心策略路径，对边界情况和设计哲学有了坚实理解。
+
+---
 
 ### 21｜主线：状态推进到 fundamentals 阶段
 
@@ -744,9 +782,12 @@ flowchart TB
 追加 evidence → approve → validate-transition.py advance fundamentals → TRANSITION_APPROVED fundamentals。更新 state.json 的 next_skill=learn-faster, next_action=深入理解向量嵌入原理和 RRF 算法。
 
 #### 最终理解
-diagonis 阶段完成，推进到 fundamentals 阶段。下一步：深入理解 Embedding 原理、余弦相似度、RRF 公式推导和 QualityGate 校验逻辑。
+diagnosis 阶段完成，推进到 fundamentals 阶段。下一步：深入理解 Embedding 原理、余弦相似度、RRF 公式推导和 QualityGate 校验逻辑。
 
-#### 代码或证据
+#### 代码
+本条无代码关联。
+
+#### 证据
 阶段推进完成：diagnosis → fundamentals
 
 ---
@@ -782,35 +823,9 @@ diagonis 阶段完成，推进到 fundamentals 阶段。下一步：深入理解
 #### 最终理解
 巩固了 4 个薄弱点：① GENERATE 触发条件是包含"生成""测试用例"等关键词 ② 双写写入顺序：先 ChromaDB（不稳定的路径）→ 后 LocalIndex（安全的幂等路径） ③ not_found 兜底 vs vector 语义检索的边界区分 ④ self 独立对象计数是各算各的，互不影响。
 
-#### 代码或证据
-薄弱点需重点复习：双写顺序、not_found 边界、GENERATE/FACT_LOOKUP 区分、self 计数
-
-##### _decide_strategy 决策树（核心错误 1/3/5 涉及）
-
-```mermaid
-flowchart TB
-    Q[用户查询] --> QA[QueryAnalyzer.analyze]
-    QA --> LI[LocalIndex.search]
-    LI --> DS{_decide_strategy}
-
-    DS -->|intent=LOCATE/FACT_LOOKUP<br>+ 精确命中唯一| LE[local_exact\n直接返回本地结果]
-    DS -->|has_candidates=True| HY[hybrid\n双路检索 + RRF 融合]
-    DS -->|exact_entity_requested<br>+ 本地空| NF[not_found\n返回空，不走向量]
-    DS -->|intent=ANALYSIS/IMPACT<br>/SIMILARITY/GENERATE| VC[vector\n纯向量语义检索]
-    DS -->|兜底| NF2[not_found\n安全返回空]
-
-    style LE fill:#27ae60
-    style NF fill:#e74c3c
-    style NF2 fill:#e74c3c
-    style HY fill:#f39c12
-    style VC fill:#3498db
-
-    linkStyle 2,4 stroke:#e74c3c,stroke-width:2
-```
-
-> 🔴 红色路径是你答错的 **not_found** 分支 —— intent=LOCATE 但无实体时不走向量，走兜底 not_found
-
-#### 源代码：_decide_strategy 完整代码
+<!-- code-required: true -->
+#### 代码
+#### 源代码：_decide_strategy 完整代码（核心错误 1/3/5 涉及）
 
 来源：`testteller/core/retrieval/hybrid_retriever.py:46-55`
 
@@ -833,7 +848,7 @@ def _decide_strategy(self, intent, local_result):
 ```
 
 #### 代码解释
-5 条 if-elif 规则逐层判断：① 精确命中 → local_exact ② 有候选 → hybrid ③ 查实体无果 → not_found ④ 分析类 → vector ⑤ 兜底 → not_found。错题 1（intent 判断）看规则 4，错题 3（双写顺序）涉及 chromadb_manager.py，错题 5（边界路径）看规则 5 兜底。
+5 条 if-elif 规则逐层判断。错题 1（intent 判断）看规则 4（GENERATE 匹配），错题 5（边界路径）看规则 5 兜底（not_found）。
 
 #### 源代码：add_documents 双写顺序
 
@@ -843,36 +858,114 @@ def _decide_strategy(self, intent, local_result):
 def add_documents(self, documents, metadatas=None, ids=None):
     # ① 先生成所有文档的 embedding
     embeddings = self.llm_manager.get_embeddings_sync(documents)
-    
     # 检查 embedding 是否全部成功
     if any(emb is None for emb in embeddings):
         raise EmbeddingGenerationError(...)  # 失败则抛异常
-    
     # ② 先写 ChromaDB（向量库）—— 这条路径可能失败
     self.collection.add(embeddings=embeddings, documents=documents, ids=ids)
-    
     # ③ 成功后，再写 LocalIndex（SQLite 精确索引）—— 幂等 upsert
     self.local_index.add_documents(documents=documents, metadatas=metadatas, ids=ids)
 ```
 
 > ⚠️ **错题 3 纠正**：先 ChromaDB → 后 LocalIndex。因为 ChromaDB 的 embedding 调用可能失败，如果先写 LocalIndex 会导致 SQLite 有数据但向量库没有，查出来不完整。
 
+#### 证据
+薄弱点需重点复习：双写顺序、not_found 边界、GENERATE/FACT_LOOKUP 区分、self 计数
+
 ---
+
+## 模块图示
+
+### 图示 01｜RAG 流水线四道防线总览
+
+类型：flowchart
+
+```mermaid
+flowchart TB
+    subgraph "第一道防线：本地精确检索（零 LLM 成本）"
+        A[用户查询] --> B[QueryAnalyzer 意图分类]
+        B --> C[LocalIndex SQLite 精确匹配]
+        C --> D{_decide_strategy 决策}
+    end
+    subgraph "第二道防线：向量语义检索"
+        D -->|local_exact| E[直接返回本地结果\n完全不调 embedding]
+        D -->|hybrid| F[查 ChromaDB 向量库\n语义相似度搜索]
+        D -->|vector| F
+        D -->|not_found| G[直接返回空\n不浪费 embedding]
+    end
+    subgraph "第三道防线：RRF 融合排序"
+        E --> H[组装最终结果]
+        F --> I[RRF 融合\n本地排名 + 向量排名]
+        G --> H
+        I --> H
+    end
+    subgraph "第四道防线：LLM 生成 + 质量门禁"
+        H --> J[Generator Agent\n组装 Prompt]
+        J --> K[LLM 调用\n生成回答]
+        K --> L[QualityGate 质量门禁\n语义一致性校验]
+        L --> M[最终输出]
+    end
+```
+
+#### 图示说明
+RAG 流水线四层防御体系。第一道 LocalIndex 零 LLM 成本，第二道 ChromaDB 语义搜索，第三道 RRF 融合排序，第四道 LLM+QualityGate 质量校验。核心设计思想：能用 SQL 解决的绝不调 embedding，能用 embedding 解决的绝不调 LLM。
+
+#### 与模块的关系
+这是整个 testteller-agent RAG 系统的架构总览，覆盖了本笔记的所有核心模块。
+
+### 图示 02｜_decide_strategy 策略决策树
+
+类型：flowchart
+
+```mermaid
+flowchart TB
+    Q[用户查询] --> QA[QueryAnalyzer.analyze]
+    QA --> LI[LocalIndex.search]
+    LI --> DS{_decide_strategy}
+
+    DS -->|intent=LOCATE/FACT_LOOKUP\n+ 精确命中唯一| LE[local_exact\n直接返回本地结果]
+    DS -->|has_candidates=True| HY[hybrid\n双路检索 + RRF 融合]
+    DS -->|exact_entity_requested\n+ 本地空| NF[not_found\n返回空，不走向量]
+    DS -->|intent=ANALYSIS/IMPACT\n/SIMILARITY/GENERATE| VC[vector\n纯向量语义检索]
+    DS -->|兜底| NF2[not_found\n安全返回空]
+
+    LE --> R[组装最终结果]
+    HY --> RRF[RRF 融合]
+    VC --> RRF
+    NF --> R
+    NF2 --> R
+    RRF --> R
+    R --> GA[Generator Agent]
+    GA --> LLM[LLM 调用]
+    LLM --> QG[QualityGate]
+
+    style LE fill:#27ae60
+    style NF fill:#e74c3c
+    style NF2 fill:#e74c3c
+    style HY fill:#f39c12
+    style VC fill:#3498db
+```
+
+#### 图示说明
+5 条 if-elif 策略路径。local_exact（绿色）最快不调 embedding；hybrid（橙色）双路互补；not_found（红色）止损；vector（蓝色）纯语义。红色路径是学习者易混淆的边界情况。
+
+#### 与模块的关系
+核心策略路由决策逻辑，对应 hybrid_retriever.py 的 _decide_strategy 方法。
 
 ## 模块总结
 
-已完成 RAG 流水线前段（检索层）的深入学习：
+已完成 RAG 流水线全部核心模块学习：
 
-| 模块                                   | 状态   | 核心要点                                                       |
-| ------------------------------------ | ---- | ---------------------------------------------------------- |
-| `retrieval_patterns.py`              | ✅ 完成 | 13 个正则变量集中管理，TOKEN_PATTERN 同时处理中英文                         |
-| `models.py`                          | ✅ 完成 | QueryAnalysis → LocalSearchResult → RetrievalResult 三层数据流转 |
-| `query_analyzer.py`                  | ✅ 完成 | 纯规则意图分类，if-elif 链，中文二元组轻量分词                                |
-| `local_index.py`                     | ✅ 完成 | SQLite 双表，读写分离，权重体系，幂等去重                                   |
-| `chromadb_manager.py`                | ⬜ 待学 | 向量库 + LocalIndex 写入协同                                      |
-| `hybrid_retriever.py`                | ⬜ 待学 | 4 种策略路由决策                                                  |
-| `result_fusion.py`                   | ⬜ 待学 | RRF 融合公式                                                   |
-| `testteller_agent.py` + `prompts.py` | ⬜ 待学 | Prompt 组装 + LLM + QualityGate                              |
+| 模块 | 状态 | 核心要点 |
+|---|---|---|
+| `retrieval_patterns.py` | ✅ 完成 | 13 个正则变量集中管理，TOKEN_PATTERN 同时处理中英文 |
+| `models.py` | ✅ 完成 | QueryAnalysis → LocalSearchResult → RetrievalResult 三层数据流转 |
+| `query_analyzer.py` | ✅ 完成 | 纯规则意图分类，if-elif 链，中文二元组轻量分词 |
+| `local_index.py` | ✅ 完成 | SQLite 双表，读写分离，权重体系，幂等去重 |
+| `chromadb_manager.py` | ✅ 完成 | 向量库 + LocalIndex 写入协同 |
+| `hybrid_retriever.py` | ✅ 完成 | 4 种策略路由决策 |
+| `result_fusion.py` | ✅ 完成 | RRF 融合公式 |
+| `testteller_agent.py` + `prompts.py` | ⬜ 待学 | Prompt 组装 + LLM + QualityGate |
 
 ## 容易再次混淆的地方
 
@@ -887,20 +980,13 @@ def add_documents(self, documents, metadatas=None, ids=None):
 ## 待复习问题
 
 1. `_decide_strategy` 的 4 个分支对应的触发条件是什么？
-2. `MatchType.EXACT` 和 `unique=True` 分别在什么条件下成立？
-3. RRF 融合（result_fusion.py）如何让精确结果排在语义结果之前？
-4. ChromaDB 写入时 Embedding 失败会怎样（看 chromadb_manager.py L147）？
-5. `TOKEN_PATTERN` 中 `[\u4e00-\u9fff]{2,}` 为什么要求至少 2 个中文？
-6. add_documents 写入时先写 ChromaDB 还是 LocalIndex？为什么？
-7. not_found 边界场景中，intent=LOCATE 但无实体会触发哪个策略分支？
-
-
-### 本次整理 2026-07-20
-- 总结：学习了剩余的 ChromaDBManager（向量存储管理器 → 写入时同步写 LocalIndex）、_decide_strategy 四种策略路由（local_exact/hybrid/vector/not_found）、RRF 排名融合原理。通过 3 道边界诊断测试（精确命中/hybrid 混合/not_found 兜底），状态从 diagnosis 推进到 fundamentals。
-- 易混淆点：RLocal_exact 策略下是否调 LLM：完全不调 embedding，纯 SQL 查询微秒级返回；hybrid 和 vector 的区别：本地有候选时走 hybrid（双路+RRF），本地无候选且意图模糊时走纯 vector；embedding 是否一定贵：用 Ollama 本地模型时免费，但 SQL 仍然比本地模型推理快 100-1000 倍；not_found 时 LLM 还会被调用：documents=[] → context="" → 空上下文喂给 LLM → QualityGate 大概率拦截
-- 待复习：_decide_strategy 的 4 个分支在什么条件下触发？；ChromaDBManager.add_documents 写入时，先写 ChromaDB 还是先写 LocalIndex？为什么？；RRF 公式中 exact_bonus = 1.0 的作用是什么？；hybrid 策略和 vector 策略的核心区别是什么？；not_found 策略触发后，文档链路上具体发生了什么？（从检索 → Prompt → LLM → QualityGate）；self 关键字在 Python 中的作用是什么？为什么方法定义时要写 self 参数？；本地 embedding 模型（如 llama3.2:1b）和云端（如 text-embedding-004）在延迟/成本/隐私上的对比？
+2. RRF 融合公式中 exact_bonus=1.0 的设计意图是什么？
+3. add_documents 写入时为什么先写 ChromaDB 后写 LocalIndex？
+4. not_found 边界场景中 intent=LOCATE 但无实体会触发哪个策略分支？
+5. QueryAnalyzer 的 _classify_intent 中六个意图的优先级顺序是什么？
 
 ## 复习记录
 - 2026-07-19：完成本模块第一次学习并落盘
-- 2026-07-20：追加 9 条学习记录
+- 2026-07-20：完成 ChromaDBManager / _decide_strategy / RRF 融合学习
 - 2026-07-21：6 题知识回顾，4 道有误需巩固。薄弱点：① GENERATE vs FACT_LOOKUP 触发条件混淆 ② 双写写入顺序记反（先 ChromaDB 后 LocalIndex） ③ not_found 边界执行路径走错（不会走向量） ④ self 独立对象计数计算有误
+- 2026-07-22：使用更新后的 skill 重新落盘，统一新格式（`代码`/`证据`分离、结构化图示）
