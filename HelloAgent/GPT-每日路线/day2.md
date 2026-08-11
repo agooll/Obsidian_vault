@@ -5,7 +5,7 @@
 4. while current_step < max_steps 为什么必须存在？
 5. LLM 输出 Search[xxx] 后，是怎么一步一步变成真实 Python Tool 调用的？
 [answer]
-1.因为
+1.
 2 - **Thought**：模型根据当前问题和已有信息进行分析，判断下一步该做什么。
 - **Action**：模型决定采取某个动作，通常表现为**调用某个工具，并给出调用参数**。
 - **Observation**：工具执行 Action 后返回的**执行结果**，模型再根据这个结果继续推理。
