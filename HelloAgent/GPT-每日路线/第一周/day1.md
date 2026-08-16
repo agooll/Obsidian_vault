@@ -2,17 +2,17 @@
 
 ## 📋疑难整理目录
 
-1. [[#^day1-level-1|第一关：语法符号解密（箭头→与冒号：）]]
+1. [[day1#^day1-level-1|第一关：语法符号解密（箭头→与冒号：）]]
     
-2. [[#^day1-level-2|第二关：到底什么是“类”与“实例”？]]
+2. [[day1#^day1-level-2|第二关：到底什么是“类”与“实例”？]]
     
-3. [[#^day1-level-3|第三关：搞懂贯穿始终的 self]]
+3. [[day1#^day1-level-3|第三关：搞懂贯穿始终的 self]]
     
-4. [[#^day1-level-4|第四关：数据传递与变量作用域（self.xxx vs xxx）]]
+4. [[day1#^day1-level-4|第四关：数据传递与变量作用域（self.xxx vs xxx）]]
     
-5. [[#^day1-level-5|第五关：跨类调用的底层真相（Tool 与 ToolExecutor）]]
+5. [[day1#^day1-level-5|第五关：跨类调用的底层真相（Tool 与 ToolExecutor）]]
     
-6. [[#^day1-level-6|第六关：追寻消失的“实例化”过程]]
+6. [[day1#^day1-level-6|第六关：追寻消失的“实例化”过程]]
     
 
 ## 第一关：语法符号解密（箭头`->`与冒号`:`） ^day1-level-1
