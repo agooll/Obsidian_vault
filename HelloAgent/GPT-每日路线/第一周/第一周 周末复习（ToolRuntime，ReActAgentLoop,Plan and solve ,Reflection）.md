@@ -864,4 +864,12 @@ Reason
 
 
 
-### ReActAGEN
+### ReActAgentLoop
+流程：
+LLM          → 决策
+ActionParser → 解析决策
+Registry     → 保存/查找工具
+ToolExecutor → 调度工具
+Tool.execute → 真正执行 + 捕获异常
+AgentLoop    → 把整个流程循环起来
+
