@@ -1,12 +1,32 @@
 {
   "recentFiles": [
     {
-      "basename": "第三章 大语言模型基础",
-      "path": "HelloAgent/章节/chapter3/第三章 大语言模型基础.md"
-    },
-    {
       "basename": "秋招冲刺学习路线_2026-07-26至2026-08-31",
       "path": "HelloAgent/秋招冲刺学习路线_2026-07-26至2026-08-31.md"
+    },
+    {
+      "basename": "时间-课程安排",
+      "path": "HelloAgent/时间-课程安排.md"
+    },
+    {
+      "basename": "习题",
+      "path": "HelloAgent/习题.md"
+    },
+    {
+      "basename": "章节",
+      "path": "HelloAgent/章节.md"
+    },
+    {
+      "basename": "Extra-Chapter",
+      "path": "HelloAgent/Extra-Chapter.md"
+    },
+    {
+      "basename": "HelloAgent内容导航",
+      "path": "HelloAgent/HelloAgent内容导航.md"
+    },
+    {
+      "basename": "第三章 大语言模型基础",
+      "path": "HelloAgent/章节/chapter3/第三章 大语言模型基础.md"
     },
     {
       "basename": "缩放点积注意力公式",
