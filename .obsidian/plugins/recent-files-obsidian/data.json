@@ -1,12 +1,16 @@
 {
   "recentFiles": [
     {
+      "basename": "helloagents-langgraph-day3-persistence-checkpointer-thread-id",
+      "path": "HelloAgent/GPT-每日路线/第六章/helloagents-langgraph-day3-persistence-checkpointer-thread-id.md"
+    },
+    {
       "basename": "LangGraph Day 2：State、State Up",
       "path": "HelloAgent/GPT-每日路线/第六章/LangGraph Day 2：State、State Up.md"
     },
     {
-      "basename": "helloagents-langgraph-day3-persistence-checkpointer-thread-id",
-      "path": "HelloAgent/GPT-每日路线/第六章/helloagents-langgraph-day3-persistence-checkpointer-thread-id.md"
+      "basename": "第一周 周末复习（ToolRuntime，ReActAgentLoop,Plan and solve ,Reflection）",
+      "path": "HelloAgent/GPT-每日路线/第一周/第一周 周末复习（ToolRuntime，ReActAgentLoop,Plan and solve ,Reflection）.md"
     },
     {
       "basename": "ToolCalling_Day1_过关标准",
@@ -83,10 +87,6 @@
     {
       "basename": "缩放点积注意力公式",
       "path": "HelloAgent/知识补充/缩放点积注意力公式.md"
-    },
-    {
-      "basename": "第一周 周末复习（ToolRuntime，ReActAgentLoop,Plan and solve ,Reflection）",
-      "path": "HelloAgent/GPT-每日路线/第一周/第一周 周末复习（ToolRuntime，ReActAgentLoop,Plan and solve ,Reflection）.md"
     },
     {
       "basename": "第3章习题",
