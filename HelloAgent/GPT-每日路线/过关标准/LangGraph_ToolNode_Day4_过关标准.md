@@ -77,7 +77,9 @@ observation                 ->      ToolMessages
 if has action else final    ->      tools_condition
 while loop                  ->      cycle
 ```
-
+### 核心升级亮点回顾：
+1. **不用手写正则了**：以前手写 ReAct 必须写 `re.search(r"Action: (.*)")` 来抠工具名，现在直接通过大模型原生支持的 **`tool_calls`** 搞定。
+2. **不用写 `while` 死循环了**：以前容易控制不好 `while` 导致死循环，现在通过 **`tools` →→ `agent` 的图连线（Edge）** 配合 **`tools_condition` 条件边**，自动优雅地完成循环控制。
 ## 5. 最小流程验收
 
 不用查资料，能闭卷画出并讲清楚：
