@@ -56,7 +56,7 @@ LLM Node
 
 ```text
 手写 ReAct                         LangGraph
-history                     ->      
+history                     ->      State[Messages]
 call_llm(history)           ->      
 parse_action(llm_output)    ->      
 tool_executor.run(action)   ->      
