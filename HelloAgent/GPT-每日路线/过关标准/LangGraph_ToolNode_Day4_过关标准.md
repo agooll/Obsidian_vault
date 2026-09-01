@@ -56,25 +56,26 @@ LLM Node
 
 ```text
 手写 ReAct                         LangGraph
-history                     ->      State[Messages]
+history                     ->      
 call_llm(history)           ->      
 parse_action(llm_output)    ->      
 tool_executor.run(action)   ->      
-observation                 ->      ToolMessages
-if has action else final    ->      tools_condition
-while loop                  ->      cycle
+observation                 ->      
+if has action else final    ->      
+while loop                  ->      
 ```
 
 **我的作答：**
 
 ```text
-
-
-
-
-
-
-
+手写 ReAct                         LangGraph
+history                     ->      State[Messages]
+call_llm(history)           ->      AIMessage
+parse_action(llm_output)    ->      tool_calls
+tool_executor.run(action)   ->      Tool_Node
+observation                 ->      ToolMessages
+if has action else final    ->      tools_condition
+while loop                  ->      cycle
 ```
 
 ## 5. 最小流程验收
