@@ -1,8 +1,20 @@
 {
   "recentFiles": [
     {
+      "basename": "时间-课程安排",
+      "path": "HelloAgent/时间-课程安排.md"
+    },
+    {
       "basename": "秋招冲刺学习路线_2026-07-26至2026-08-31",
       "path": "HelloAgent/秋招冲刺学习路线_2026-07-26至2026-08-31.md"
+    },
+    {
+      "basename": "Reflection_Day4_过关标准",
+      "path": "HelloAgent/GPT-每日路线/过关标准/Reflection_Day4_过关标准.md"
+    },
+    {
+      "basename": "ToolCalling_Day1_过关标准",
+      "path": "HelloAgent/GPT-每日路线/过关标准/ToolCalling_Day1_过关标准.md"
     },
     {
       "basename": "HelloAgents_Day8_ToolRuntime_ReActLoop_独立学习卡",
@@ -41,14 +53,6 @@
       "path": "PROJECT_EXECUTION_AND_FILES_CN.md"
     },
     {
-      "basename": "ToolCalling_Day1_过关标准",
-      "path": "HelloAgent/GPT-每日路线/过关标准/ToolCalling_Day1_过关标准.md"
-    },
-    {
-      "basename": "Reflection_Day4_过关标准",
-      "path": "HelloAgent/GPT-每日路线/过关标准/Reflection_Day4_过关标准.md"
-    },
-    {
       "basename": "ReActAgentLoop_Day6_过关标准",
       "path": "HelloAgent/GPT-每日路线/过关标准/ReActAgentLoop_Day6_过关标准.md"
     },
@@ -83,10 +87,6 @@
     {
       "basename": "第四章 智能体经典范式构建",
       "path": "HelloAgent/章节/chapter4/第四章 智能体经典范式构建.md"
-    },
-    {
-      "basename": "时间-课程安排",
-      "path": "HelloAgent/时间-课程安排.md"
     },
     {
       "basename": "习题",
